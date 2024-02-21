@@ -5,7 +5,7 @@ LIBFT		= libft/libft.a
 MLX_DIR		= ./mlx_linux
 MLX_INCLUDE = -Imlx_linux
 CC			= @cc
-CFLAGS		= -Wall -Wextra -Werror -g3 -fsanitize=address,undefined
+CFLAGS		= -Wall -Wextra -Werror -g3# -fsanitize=address,undefined
 MLX_FLAGS 	= -L$(MLX_DIR) -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
 
 all:		$(NAME)

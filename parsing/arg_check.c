@@ -6,17 +6,15 @@ int check_file_extension(char *file)
     int len;
     char *ext;
 
-    len = ft_strlen(file);
-    i = len - 1;
+    len = strlen(file);
     ext = ".cub";
-    printf("--------%s-------\n", file);
-    // while (file[len - 1] == ' ')
-    //     len--;
-    while (i < len)
+
+    i = 0;
+    while (file[len - 1] == ' ')
+        len--;
+    while (file[len - 4 + i] && ext[i] )
     {
-        printf("------file[i]: %c -----\n------ext[len-i]: %c -----\n ---i: %d---\n", file[i],ext[len-i], i);
-        if (file[i] != ext[len - 4 + i
-        ])
+        if (file[len - 4 + i] != ext[i])
             return (-1);
         i++;
     }

@@ -22,6 +22,27 @@ int check_map_chars(char **map)
     return (0);
 }
 
+int check_surrounded(char **map)
+{
+    int i;
+    int j;
+
+    j = 0;
+    i = 0;
+    while (map[i])
+    {
+        while (map[i][j])
+        {
+            if (map[i][j] == '0')
+                if (check_surround(map, i, j) == -1)
+                    return (-1);
+            j++;
+        }
+        i++;
+    }
+    return (0);
+}
+
 int main(int argc, char  **argv)
 {
 
