@@ -32,12 +32,12 @@ int check_args(int argc, char **argv)
 {
     if (argc != 2)
     {
-        printf("%d \n", -1);
+        printf("./cub3d file_path: number of args given: %d \n", -2);
         return (-1);
     }
     if (check_file_extension(argv[1]) == -1)
     {
-        printf("%d \n", -2);
+        printf("file must end with .ber");
         return (-2);
     }
     if (check_file_access(argv[1]) == -1)
@@ -46,5 +46,4 @@ int check_args(int argc, char **argv)
         return (-3);
     }
     return (0);
-    
 }
