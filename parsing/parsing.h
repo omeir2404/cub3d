@@ -16,4 +16,5 @@ typedef struct s_map t_map;
 
 
 int check_args(int argc, char **argv);
+int parse_map(char **map);
 #endif

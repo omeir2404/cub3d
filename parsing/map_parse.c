@@ -31,11 +31,29 @@ int check_valid_char(char c)
     return (1);
 }
 
+int check_limits(char **map)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while(map[i])
+    {
+        while (map[i][j])
+        {
+            if ((check_valid_char(map[i][j]) && map[i][j] != '1' ) && (i == 0 || j == 0 || j == ft_strlen(map[i]) || i == MAPSIZE - 1))
+            j++;
+        }
+        i++;
+    }
+}
+
 int check_surround_char(char **map, int x, int y)//this function need to be better
 {// possibly not covering if theres a non 1 char at [map[0][0...]] or at [map[len][0...MAPSIZE]]
     // Check for '1's in the surrounding cells
     if (x > 0 && check_valid_char(map[x - 1][y]))
-        return 1;
+        return (1);
     if (x < (int)ft_strlen(map[x]) && check_valid_char(map[x + 1][y]))
         return 1;
     if (y > 0 && check_valid_char(map[x][y - 1]))
@@ -50,6 +68,8 @@ int check_surround_char(char **map, int x, int y)//this function need to be bett
     if (x < (int)ft_strlen(map[x]) && y > 0 && check_valid_char(map[x + 1][y - 1]))
         return 1;
     if (x < (int)ft_strlen(map[x]) && y < MAPSIZE && check_valid_char(map[x + 1][y + 1]))
+        return 1;
+    if (check_limits(map) == 1)
         return 1;
     return 0; // All surrounding characters are valid
 }
