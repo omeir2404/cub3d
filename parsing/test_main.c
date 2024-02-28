@@ -3,13 +3,8 @@
 
 #include <stdlib.h>
 
-int check_args(int argc, char **argv);
-int parse_map(char **map);
-
-#define screenWidth 640
-#define screenHeight 480
-#define mapWidth 24
-#define mapHeight 24
+// int check_args(int argc, char **argv);
+// int parse_map(char **map);
 
 
 int main(int argc, char  **argv)

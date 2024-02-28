@@ -1,6 +1,12 @@
 #include "parsing.h"
 
 #define MAPSIZE 23
+int check_valid_char(char c)
+{
+    if (c == '0' || c == '1' ||c == 'W' ||c == 'N' ||c == 'E' ||c == 'S' ||c == ' ' )// confirm {' '}
+        return (0);
+    return (1);
+}
 
 int check_map_chars(char **map)
 {
@@ -14,8 +20,7 @@ int check_map_chars(char **map)
         x = 0;
         while(map[y][x])
         {
-            if (map[y][x] != '0' && map[y][x] != '1' && map[y][x] != 'N'
-                && map[y][x] != 'W' && map[y][x] != 'S' && map[y][x] != 'E' && map[y][x] != ' ' && map[y][x] != '\t')
+            if (check_valid_char(map[y][x]))
                 return (-1);
             x++;
         }
@@ -24,12 +29,6 @@ int check_map_chars(char **map)
     return (0);
 }
 
-int check_valid_char(char c)
-{
-    if (c == '0' || c == '1' ||c == 'W' ||c == 'N' ||c == 'E' ||c == 'S' ||c == ' ' )// confirm {' '}
-        return (0);
-    return (1);
-}
 
 // int check_limits(char **map)
 // {

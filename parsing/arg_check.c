@@ -12,7 +12,7 @@ int check_file_extension(char *file)
     i = 0;
     while (file[len - 1] == ' ')
         len--;
-    while (file[len - 4 + i] && ext[i] )
+    while (file[len - 4 + i] && ext[i])
     {
         if (file[len - 4 + i] != ext[i])
             return (-1);
@@ -32,7 +32,7 @@ int check_args(int argc, char **argv)
 {
     if (argc != 2)
     {
-        printf("./cub3d file_path: number of args given: %d \n", -2);
+        printf("./cub3d file_path: number of args given: %d\nargs needed: 2\n", argc);
         return (-1);
     }
     if (check_file_extension(argv[1]) == -1)
