@@ -42,7 +42,7 @@ int check_args(int argc, char **argv)
     }
     if (check_file_access(argv[1]) == -1)
     {
-        printf("%d \n", -3);
+        printf("NO ACCESS sus%d \n", -3);
         return (-3);
     }
     return (0);

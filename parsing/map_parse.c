@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-#define MAPSIZE 10
+#define MAPSIZE 23
 
 int check_map_chars(char **map)
 {
@@ -31,46 +31,58 @@ int check_valid_char(char c)
     return (1);
 }
 
-int check_limits(char **map)
-{
-    int i;
-    int j;
+// int check_limits(char **map)
+// {
+//     int i;
+//     int j;
 
-    i = 0;
-    j = 0;
-    while(map[i])
+//     i = 0;
+//     j = 0;
+//     while(map[i])
+//     {
+//         while (map[i][j])
+//         {
+//             if ((check_valid_char(map[i][j]) && map[i][j] != '1' ) && (i == 0 || j == 0 || j == ft_strlen(map[i]) || i == MAPSIZE - 1))
+//             j++;
+//         }
+//         i++;
+//     }
+// }
+
+int last_in_line(char *line, int index)
+{
+    while (line[++index])
     {
-        while (map[i][j])
-        {
-            if ((check_valid_char(map[i][j]) && map[i][j] != '1' ) && (i == 0 || j == 0 || j == ft_strlen(map[i]) || i == MAPSIZE - 1))
-            j++;
-        }
-        i++;
+        if (line[index] != ' ' && line[index] != '\0')
+            return (0);
     }
+    return (1);
 }
 
 int check_surround_char(char **map, int x, int y)//this function need to be better
 {// possibly not covering if theres a non 1 char at [map[0][0...]] or at [map[len][0...MAPSIZE]]
     // Check for '1's in the surrounding cells
-    if (x > 0 && check_valid_char(map[x - 1][y]))
+    if (x == 0 || y == 0 || x == MAPSIZE || y == (int)ft_strlen(map[x]))
         return (1);
-    if (x < (int)ft_strlen(map[x]) && check_valid_char(map[x + 1][y]))
+    if (check_valid_char(map[x - 1][y]))
+        return (1);
+    if (check_valid_char(map[x + 1][y]))
         return 1;
-    if (y > 0 && check_valid_char(map[x][y - 1]))
+    if (check_valid_char(map[x][y - 1]))
         return 1;
-    if (y < MAPSIZE && check_valid_char(map[x][y + 1]))
+    if (check_valid_char(map[x][y + 1]))
         return 1;
     // Diagonal Checks
-    if (x > 0 && y > 0 && check_valid_char(map[x - 1][y - 1]))
+    if (check_valid_char(map[x - 1][y - 1]))
         return 1;
-    if (x > 0 && y < MAPSIZE && check_valid_char(map[x - 1][y + 1]))
+    if (check_valid_char(map[x - 1][y + 1]))
         return 1;
-    if (x < (int)ft_strlen(map[x]) && y > 0 && check_valid_char(map[x + 1][y - 1]))
+    if (check_valid_char(map[x + 1][y - 1]))
         return 1;
-    if (x < (int)ft_strlen(map[x]) && y < MAPSIZE && check_valid_char(map[x + 1][y + 1]))
+    if (check_valid_char(map[x + 1][y + 1]))
         return 1;
-    if (check_limits(map) == 1)
-        return 1;
+    // if (check_limits(map) == 1)
+    //     return 1;
     return 0; // All surrounding characters are valid
 }
 
@@ -83,10 +95,11 @@ int check_surrounded(char **map)
     i = 0;
     while (map[i])
     {
+        j = 0;
         while (map[i][j])
         {
-            if (!check_valid_char(map[i][j]) && map[i][j] != '1')// all chars but 1 are surrounded but valid chars
-                if (check_surround_char(map, i, j) == -1)//leads to the map is surrounded by '1's
+            if (!check_valid_char(map[i][j]) && map[i][j] != '1')// all chars besides 1 are surrounded but valid chars
+                if (check_surround_char(map, i, j) == 1)//leads to the map is surrounded by '1's
                     return (-1);
             j++;
         }
@@ -104,8 +117,9 @@ int parse_map(char **map)
     }
     if (check_surrounded(map) == -1)
     {
-        printf("not propperly surrounded\n");
+        printf("not properly surrounded\n");
         return (-1);
     }
+    printf("all good");
     return (0);
 }
