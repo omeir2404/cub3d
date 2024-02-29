@@ -1,5 +1,9 @@
 #include "parsing.h"
 
+/**
+ * @brief checks if the file given has the correct extension to be readable
+ * @return 0 if correct, -1 if not correct
+*/
 int check_file_extension(char *file)
 {
     int i;
@@ -21,13 +25,46 @@ int check_file_extension(char *file)
     return (0);
 }
 
+/**
+ * @brief checks if the file exists and given has the correct permissions to be readable
+ * @return 0 if correct, -1 if not correct
+*/
 int check_file_access(char *file)
 {
-    if (!(access(file, R_OK) == 0))
+    char *give;
+    int start;
+    int end;
+    int i;
+
+    i = 0;
+    start = 0;
+    while (file[start] == ' ')
+        start++;
+    end = (int)ft_strlen(file) - 1;
+    while(file[end] == ' ')
+        end--;
+    give = (char *)malloc((end - start) + 2);
+    while(start <= end)
+        give[i++] = file[start++];
+    give[i] = '\0';
+    printf("%s\n", give);
+    if (!(access(give, R_OK) == 0))
+    {
+        free(give);
         return (-1);
+    }
+    free(give);
     return (0);
+    //  alex 
+    // 012345
+
+    // 4 - 1 = 3
 }
 
+/**
+ * @brief checks if arguments follow the given rules
+ * @return 0 if args are correct, >0 if incorrect
+*/
 int check_args(int argc, char **argv)
 {
     if (argc != 2)

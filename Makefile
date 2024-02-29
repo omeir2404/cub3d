@@ -24,6 +24,8 @@ fclean:		clean
 			@$(MAKE) --no-print-directory -C $(MLX_DIR) clean
 			@rm -f $(NAME)
 
+lib:
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) re
 
 re:			fclean all
 

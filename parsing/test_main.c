@@ -49,20 +49,6 @@ int main(int argc, char  **argv)
 };
 
     for (int i = 0; i < 24; i++) {
-        for (int j = 0; j < 25; j++) {
-            worldmap[i][j] = values[i][j];
-        }
-    }
-    // t_map map;
-    // init_map(&map, argv, argc);
-    check_args(argc, argv);
-    // char* flattenedMap = (char *)worldMap;
-    parse_map(worldmap);
-    // parse_map(worldMap);
-    for (int i = 0; i < 4; i++) {
-        free(worldmap[i]);
-    }
-    free(worldmap);
 
     return 0;
 }
