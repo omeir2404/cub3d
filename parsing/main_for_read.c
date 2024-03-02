@@ -6,6 +6,7 @@ void get_mapsize(int *fd, t_map *map)
 	char c;
 	char prev;
 
+	map->mapSize = 0;
 	while (read(*fd, &c, 1) > 0)
 	{
 		if (c == '\n' && prev != '\n')
@@ -155,30 +156,6 @@ int get_info(t_map *map)
 	return (0);
 }
 
-/**
- * @brief initializes the t_map struct with the coressponding values
- * @return 0 if ok, -1 if not
-*/
-int map_init(t_map *map, char **argv)
-{
-	map->found_direction = 0;
-	map->file = argv[1];
-	if (open_file(map) == 1)
-		return (-1);
-	if (get_info(map) == -1)
-		return (-1);
-	// find_longest_line(map);
-	get_mapsize(&map->fd, map);
-	printf("\n\n\n mapsize: %d \n\n\n", map->mapSize);
-	close(map->fd);
-	if (open_file(map) == 1)
-		return (-1);
-	allocate_map(map);
-	// get_map(map);
-
-	return (0);
-}
-
 void show_map_info(t_map map)
 {
 	int i;
@@ -199,8 +176,42 @@ void show_map_info(t_map map)
 	while (map.map && map.map[i])
 		printf("map.map[%d] :%s",i ,map.map[i++]);
 		// printf("map.map[i] :%s" ,map.map[i++]);
-
 }
+
+/**
+ * @brief initializes the t_map struct with the coressponding values
+ * @return 0 if ok, -1 if not
+*/
+int map_init(t_map *map, char **argv)
+{
+	map->north = NULL;
+	map->south = NULL;
+	map->east = NULL;
+	map->west = NULL;
+	map->ceiling = NULL;
+	map->floor = NULL;
+	map->map = NULL;
+
+	map->found_direction = 0;
+	map->file = argv[1];
+	if (open_file(map) == 1)
+		return (-1);
+	if (get_info(map) == -1)
+		return (-1);
+	// find_longest_line(map);
+	show_map_info(*map);
+	get_mapsize(&map->fd, map);
+	printf("\n\n\n mapsize: %d \n\n\n", map->mapSize);
+	close(map->fd);
+	if (open_file(map) == 1)
+		return (-1);
+	allocate_map(map);
+	// get_map(map);
+
+	return (0);
+}
+
+
 
 /**
  * @brief test main 
