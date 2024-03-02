@@ -24,6 +24,9 @@ fclean:		clean
 			@$(MAKE) --no-print-directory -C $(MLX_DIR) clean
 			@rm -f $(NAME)
 
+tempC:
+			gcc -g  libft/get_next_line_utils.c libft/get_next_line.c libft/ft_memcpy.c  libft/ft_strlen.c  libft/ft_split.c libft/ft_strlcpy.c  parsing/arg_check.c libft/ft_strchr.c parsing/map_parse.c parsing/main_for_read.c
+
 lib:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) re
 

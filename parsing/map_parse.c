@@ -8,7 +8,7 @@
 */
 int check_valid_char(char c)
 {
-    if (ft_strchr('01WNSE ', c))// confirm {' '}
+    if (ft_strchr("01WNSE ", c))// confirm {' '}
         return (0);
     return (1);
 }

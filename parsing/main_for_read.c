@@ -1,49 +1,44 @@
 #include "parsing.h"
 
-/**
- * @brief iterates the file to get the size of the next line
- * @return size of the line, -1 if there was an error and 0 if there are no more lines
-*/
-int find_next_line(int fd)
+
+void get_mapsize(int *fd, t_map *map)
 {
-	int i;
 	char c;
-	int status;
+	char prev;
 
-	i = 0;
-	status = read(fd, &c, 1);
-	while (status > 0)
+	while (read(*fd, &c, 1) > 0)
 	{
-		if (c == '\n')
-			return (i);
-		status = read(fd, &c, 1);
+		if (c == '\n' && prev != '\n')
+			map->mapSize++;	
+		prev = c;
 	}
-	if (status == -1 || i == 0 || !read)
-		return(-1);
-	return 0;
 }
+// void longest_line()
+
 
 /**
- * @brief uses {@code find_next_line} to calculate the size of the biggest line found if the map
- * @return puts the size found into map->longest_line
+ * @return true if map started
 */
-void find_longest_line(t_map *map)
+int map_start(char *s)
 {
 	int i;
-	int lines;
+	int ones;
 
-	lines = 0;
-	map->mapSize = 1;
-	i = find_next_line(map->fd);
-	while(i > 0)
+	ones = 0;
+	i = 0;
+	while (s[i])
 	{
-		if (i > map->longest_line)
-			map->longest_line = i;
-		i = find_next_line(map->fd);
-		map->mapSize++;
+		while (s[i] == ' ')
+			i++;
+		if (s[i] == '1')
+			return 1;
+		else
+			return 0;
+		i++;
 	}
-	return ;
+	return (ones >= 1);
 }
+
 
 /**
  * @brief allocates the necassary space for the map(trying to read the map from here)
@@ -52,15 +47,24 @@ void find_longest_line(t_map *map)
 void allocate_map(t_map *map)
 {
 	int i;
+	char *s;
 
 	i = 0;
-	map->map = (char **)malloc(sizeof(char *) * map->mapSize + 1);
+	map->map = (char **)malloc(sizeof(char *) * map->mapSize);// ja aumentei um para o string NULL
+	s = get_next_line(map->fd);
+	while (s && !map_start(s))
+	{
+		free(s);
+		s = get_next_line(map->fd);
+	}
+	map->map[i++] = s; 
 	while(i <= map->mapSize)
 	{
 		// map->map = (char *)malloc(sizeof(char) * map->longest_line + 1);
 		map->map[i] = get_next_line(map->fd);//make sure this works
 		i++;
 	}
+	map->map[i] = NULL;
 	return ;
 }
 
@@ -79,11 +83,6 @@ int open_file(t_map *map)
 	}
 	return (0);
 }
-
-// int get_map(t_map *map)
-// {
-//     map->map = get_next_line();
-// }
 
 void free_mat(char **matrix)
 {
@@ -109,24 +108,6 @@ void get_direction(char *s, int size, char **direction)
 	*direction = ret;
 }
 
-int map_start(char *s)
-{
-	int i;
-	int ones;
-
-	ones = 0;
-	i = 0;
-	while (s[i])
-	{
-		while (s[i] == ' ')
-			i++;
-		if (s[i] == 1)
-			ones++;
-		i++;
-	}
-
-	return (ones >= 2);
-}
 
 int collected_info(t_map map)
 {
@@ -145,14 +126,12 @@ int get_info(t_map *map)
 	int i;
 
 	s = get_next_line(map->fd);
-	while (s != NULL && !map_start(s) && collected_info(*map) == -1)
+	while (s != NULL && collected_info(*map) == -1)
 	{
 		i = 0;
-		while (s[i] == ' ')
+		while (s[i] == ' ' || s[i] == '\r')
 			i++;
-			// if (s[i] == ' ')
-			//     i++;
-		if (s[i] == '\n' || s[i] == '\0')
+		if (s[i] == '\n' || s[i] == '\0' || s[i] == '\n')
 			printf("empty line in map\n");
 		else if(s[i] == 'N' && s[i + 1] == 'O' && s[i + 2] == ' ')
 			get_direction(s, ft_strlen(s), &map->north);
@@ -188,11 +167,13 @@ int map_init(t_map *map, char **argv)
 		return (-1);
 	if (get_info(map) == -1)
 		return (-1);
-	find_longest_line(map);
-	allocate_map(map);
+	// find_longest_line(map);
+	get_mapsize(&map->fd, map);
+	printf("\n\n\n mapsize: %d \n\n\n", map->mapSize);
 	close(map->fd);
-	// if (open_file(map) == 1)
-	// 	return (-1);
+	if (open_file(map) == 1)
+		return (-1);
+	allocate_map(map);
 	// get_map(map);
 
 	return (0);
@@ -217,6 +198,8 @@ void show_map_info(t_map map)
 		printf("map.south :%s", map.south);
 	while (map.map && map.map[i])
 		printf("map.map[%d] :%s",i ,map.map[i++]);
+		// printf("map.map[i] :%s" ,map.map[i++]);
+
 }
 
 /**
