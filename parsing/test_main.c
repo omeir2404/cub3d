@@ -1,10 +1,14 @@
-#include "parsing.h"
+#include "control.h"
 
 
 #include <stdlib.h>
 
 // int check_args(int argc, char **argv);
 // int parse_map(char **map);
+
+
+t_map 
+
 
 
 int main(int argc, char  **argv)

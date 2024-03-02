@@ -1,13 +1,24 @@
 #include "parsing.h"
 
 #define MAPSIZE 23
+
+/**
+ * @brief this functions checks if the char is a valid char
+ * @return 0 if its valid 1 if its invalid
+*/
 int check_valid_char(char c)
 {
-    if (c == '0' || c == '1' ||c == 'W' ||c == 'N' ||c == 'E' ||c == 'S' ||c == ' ' )// confirm {' '}
+    if (ft_strchr('01WNSE ', c))// confirm {' '}
         return (0);
     return (1);
 }
 
+/**
+ * @brief 
+ * 
+ * @param map 
+ * @return int 
+ */
 int check_map_chars(char **map)
 {
     int y;

@@ -14,7 +14,16 @@ struct s_map
 };
 typedef struct s_map t_map;
 
+struct s_control
+{
+    t_map map;
+};
+
+*t_map get_game_control(); 
+
 
 int check_args(int argc, char **argv);
+
+
 int parse_map(char **map);
 #endif
