@@ -14,7 +14,35 @@ void get_mapsize(int *fd, t_map *map)
 		prev = c;
 	}
 }
-// void longest_line()
+
+ void map_quad(t_map *map)
+ {
+	char	**mat;
+	int i;
+	int longest;
+	int let;
+	int found;
+	
+	found = 0;
+	let = 0;
+	i = 0;
+	longest = 0;
+	while(mat[i])
+		if (ft_strlen(mat[i]) > longest)
+			longest;
+			// to finish-> find whitespaces after map lines and after map
+	while (mat[i])
+	{
+		let = ft_strlen(mat[i]);
+		while (found == 0)
+			if (mat[i] != ' ' && mat[i] != '\t')
+				found = 1;
+		if (found == 0)
+			map->mapSize--;
+		found = 0;
+		i--;
+	}
+ }
 
 
 /**
@@ -199,7 +227,7 @@ int map_init(t_map *map, char **argv)
 	if (get_info(map) == -1)
 		return (-1);
 	// find_longest_line(map);
-	show_map_info(*map);
+	// show_map_info(*map);
 	get_mapsize(&map->fd, map);
 	printf("\n\n\n mapsize: %d \n\n\n", map->mapSize);
 	close(map->fd);
