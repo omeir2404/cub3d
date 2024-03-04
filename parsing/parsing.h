@@ -6,6 +6,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+// #define malloc(x) 0 // TESTAR PARA TODOS OS MALLOCS SEREM NULOS
+
 struct s_map
 {
     char **map;
