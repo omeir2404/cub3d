@@ -8,7 +8,7 @@
 */
 int check_valid_char(char c)
 {
-    if (ft_strchr("01WNSE ", c))// confirm {' '}
+    if (ft_strchr("01WNSE \n\r", c))// confirm {' '}
         return (0);
     return (1);
 }
@@ -32,11 +32,15 @@ int check_map_chars(char **map)
         while(map[y][x])
         {
             if (check_valid_char(map[y][x]))
+            {
+                // printf("\ninvalid map character[%c], y %d, x %d\n", map[y][x], y, x);
                 return (-1);
+            }
             x++;
         }
         y++;
     }
+    printf("all chars valid\n");
     return (0);
 }
 
@@ -44,7 +48,7 @@ int last_in_line(char *line, int index)
 {
     while (line[++index])
     {
-        if (line[index] != ' ' && line[index] != '\0')
+        if (line[index] != ' ' && line[index] != '\0' && line[index] != '\n' && line[index] != '\r')
             return (0);
     }
     return (1);
@@ -86,7 +90,7 @@ int check_surrounded(char **map)
         j = 0;
         while (map[i][j])
         {
-            if (!check_valid_char(map[i][j]) && map[i][j] != '1')// all chars besides 1 are surrounded but valid chars
+            if (!check_valid_char(map[i][j]) && map[i][j] != '1' && map[i][j] != ' ' && map[i][j] != '\n' && map[i][j] != '\r' )// all chars besides 1 are surrounded but valid chars
                 if (check_surround_char(map, i, j) == 1)//leads to the map is surrounded by '1's
                     return (-1);
             j++;
@@ -99,10 +103,7 @@ int check_surrounded(char **map)
 int parse_map(char **map)
 {
     if (check_map_chars(map) == -1)
-    {
-        printf("invalid map character\n");
         return (-1);
-    }
     if (check_surrounded(map) == -1)
     {
         printf("not properly surrounded\n");
