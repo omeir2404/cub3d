@@ -54,7 +54,6 @@ int check_file_access(char *file)
     while(start <= end)
         give[i++] = file[start++];
     give[i] = '\0';
-    printf("%s\n", give);
     if (!(access(give, R_OK) == 0))
     {
         free(give);
@@ -62,10 +61,6 @@ int check_file_access(char *file)
     }
     free(give);
     return (0);
-    //  alex 
-    // 012345
-
-    // 4 - 1 = 3
 }
 
 /**
@@ -86,7 +81,7 @@ int check_args(int argc, char **argv)
     }
     if (check_file_access(argv[1]) == -1)
     {
-        printf("NO ACCESS sus%d \n", -3);
+        printf("NO ACCESS sus \n");
         return (-3);
     }
     return (0);

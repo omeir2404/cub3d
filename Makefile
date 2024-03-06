@@ -1,8 +1,9 @@
 NAME = 		cub3D
-SRC =       parsing/arg_check.c parsing/test_main.c
+SRC =       parsing/arg_check.c parsing/main_for_read.c parsing/map_parse.c \
+			parsing/info_parse.c parsing/working_utils.c
 LIBFT_DIR	= libft
 LIBFT		= libft/libft.a
-MLX_DIR		= ./mlx_linux
+MLX_DIR		= ./minilibx-linux
 MLX_INCLUDE = -Imlx_linux
 CC			= @cc
 CFLAGS		= -Wall -Wextra -Werror -g3# -fsanitize=address,undefined
@@ -24,8 +25,8 @@ fclean:		clean
 			@$(MAKE) --no-print-directory -C $(MLX_DIR) clean
 			@rm -f $(NAME)
 
-tempC:
-			cc -g libft/ft_memset.c libft/ft_calloc.c libft/ft_strlcat.c libft/get_next_line_utils.c libft/get_next_line.c libft/ft_memcpy.c  libft/ft_strlen.c  libft/ft_split.c libft/ft_strlcpy.c  parsing/arg_check.c libft/ft_strchr.c parsing/map_parse.c parsing/main_for_read.c
+mem: all
+			valgrind --log-file="val.log" --track-fds=yes --show-leak-kinds=all --leak-check=full ./cub3D maps/map1.cub
 
 lib:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) re

@@ -35,9 +35,19 @@ typedef struct s_control t_control;
 
 t_control *get_game_control(); 
 
-
+void free_mat(char **matrix);
 int check_args(int argc, char **argv);
-
-
-int parse_map(char **map);
+int info_parse(t_map *map);
+int check_file_access(char *file);
+int parse_map(char **map, t_map *struc);
+int get_mapsize(int *fd, t_map *map);
+char **copy_mat(t_map *map);
+int map_start(char *s);
+int open_file(t_map *map);
+int collected_info(t_map map);
+int get_info(t_map *map);
+void show_map_info(t_map map);
+void free_mapS(t_map *map);
+void allocate_map(t_map *map);
+void get_direction(char *s, char **direction);
 #endif
