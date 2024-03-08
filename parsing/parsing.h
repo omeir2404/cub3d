@@ -48,6 +48,7 @@ int collected_info(t_map map);
 int get_info(t_map *map);
 void show_map_info(t_map map);
 void free_mapS(t_map *map);
-void allocate_map(t_map *map);
+int allocate_map(t_map *map);
 void get_direction(char *s, char **direction);
+
 #endif

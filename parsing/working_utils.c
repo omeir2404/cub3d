@@ -213,7 +213,12 @@ void free_mapS(t_map *map)
 {
 	int i;
 
-	i = 0;
+	i = -1;
+	// char **m;
+
+	// m = map->map;
+	// while(++i <= map->mapSize)
+	// 	map->map[i] = NULL;
 	if (map->ceiling)
 		free(map->ceiling);
 	if (map->floor)
@@ -226,24 +231,30 @@ void free_mapS(t_map *map)
 		free(map->east);
 	if (map->south)
 		free(map->south);
+	i = -1;
 	if (map->map)
-		while (i <= map->mapSize)
-			free(map->map[i++]);
-	free(map->map);
+	{
+		while (map->map[++i])
+			free(map->map[i]);
+		free(map->map);
+	}
+		
 	if (map->fd)
 		close(map->fd);
 }
 /**
  * @brief allocates the necessary space for the map, and then read the map into map.map
 */
-void allocate_map(t_map *map)
+int allocate_map(t_map *map)
 {
 	int i;
 	int lol;
 	char *s;
+	int ret;
 
 	i = 0;
 	lol = 0;
+	ret = 0;
 	map->map = (char **)malloc(sizeof(char *) * (map->mapSize + 1));
 	s = get_next_line(map->fd);
 	while (s && !map_start(s))
@@ -253,8 +264,8 @@ void allocate_map(t_map *map)
 	}
 	if (!map_start(s))
 	{
+		ret = 0;
 		printf("NO MAP??\n");
-		return ;
 	}
 	map->map[i++] = s; 
 	while(i < map->mapSize)
@@ -264,13 +275,13 @@ void allocate_map(t_map *map)
 		while(map->map[i][lol] == ' ')
 			lol++;
 		if (lol == (int)ft_strlen(map->map[i]))
-			return ;
+			ret = 0;
 		if (!ft_strncmp(map->map[i], "\n", 1))
-			return ;
+			ret = 0;
 		i++;
 	}
 	map->map[i] = NULL;
-	return ;
+	return (ret);
 }
 
 /**

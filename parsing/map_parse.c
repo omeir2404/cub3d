@@ -25,6 +25,8 @@ int check_map_chars(char **map)
 
     y = 0;
     x = 0;
+    if (!map || !map[y])
+        return (-1);
     while(map[y])
     {
         x = 0;
@@ -71,7 +73,7 @@ int last_in_line(char *line, int index)
  */
 int check_surround_char(char **map, int x, int y, t_map *struc)
 {
-    if (x == 0 || y == 0 || x == struc->mapSize || y == (int)ft_strlen(map[x]))
+    if (x == 0 || y == 0 || x == (struc->mapSize -1) || y == (int)ft_strlen(map[x]))
         return (1);
     if (check_valid_char(map[x - 1][y]) || last_in_line(map[x - 1], y))
         return (1);
@@ -122,6 +124,24 @@ int check_surrounded(char **map, t_map *struc)
     return (0);
 }
 
+int check_min(char **map)
+{
+    int i;
+    int j;
+
+    j = 0;
+    i = -1;
+    while (map[++i])
+    {
+        j = -1;
+        while(map[i][++j])
+            if (map[i][j] == 'W' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E')
+                return (0);
+        
+    }
+    return (-1);
+}
+
 /**
  * @brief checks if the map is valid
  * 
@@ -131,11 +151,18 @@ int check_surrounded(char **map, t_map *struc)
  */
 int parse_map(char **map, t_map *struc)
 {
+    if (!map || map[0])
+        return (-1);
     if (check_map_chars(map) == -1)
         return (-1);
     if (check_surrounded(map, struc) == -1)
     {
         printf("not properly surrounded\n");
+        return (-1);
+    }
+    if (check_min(map) == -1)
+    {
+        printf("missing chars\n");
         return (-1);
     }
     return (0);

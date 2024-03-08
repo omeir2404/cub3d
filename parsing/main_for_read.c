@@ -55,7 +55,7 @@ void allocate_quad_map(t_map *map)
  * ATTENTION: map will need to be freed from copy_map_into_quad function that is called!!
  * @param map 
  */
-void map_quad(t_map *map)
+int map_quad(t_map *map)
 {
 	char	**mat;
 	int i;
@@ -64,8 +64,15 @@ void map_quad(t_map *map)
 	i = 0;
 	map->longest_line = 0;
 	mat = copy_mat(map);
+	if (!mat)
+		return (-1);
 	while(i < map->mapSize)
 	{
+		if (!mat[i])
+		{
+			printf("empty line in map?");	
+			return (-1);
+		}
 		size = ft_strlen(mat[i]);
 		while (mat[i][size] == '\n' || mat[i][size] == '\r' || mat[i][size] == '\0')
 			size--;
@@ -77,6 +84,7 @@ void map_quad(t_map *map)
 	allocate_quad_map(map);
 	copy_into_quad(map, mat);
 	free_mat(mat);
+	return (0);
 }
 
 /**
@@ -99,6 +107,8 @@ int is_quad(char **map)
 	while(map[i])
 	{
 		size2 = ft_strlen(map[i]);
+		if (size2 == 0 || size2 == 1)
+			return (-1);
 		while (map[i][size2] == ' ' || map[i][size2] == '\n'|| map[i][size2] == '\0')
 			size2--;
 		if (size2 != size)
@@ -108,11 +118,7 @@ int is_quad(char **map)
 	return (1);
 }
 
-/**
- * @brief initializes the t_map struct with the coressponding values
- * @return 0 if ok, -1 if not
-*/
-int map_init(t_map *map, char **argv)
+void struct_init(t_map *map, char **argv)
 {
 	map->north = NULL;
 	map->south = NULL;
@@ -121,9 +127,17 @@ int map_init(t_map *map, char **argv)
 	map->ceiling = NULL;
 	map->floor = NULL;
 	map->map = NULL;
-
 	map->found_direction = 0;
 	map->file = argv[1];
+}
+
+/**
+ * @brief initializes the t_map struct with the coressponding values
+ * @return 0 if ok, -1 if not
+*/
+int map_init(t_map *map)
+{
+
 	if (open_file(map) == 1)
 		return (-1);
 	if (get_info(map) == -1)
@@ -133,12 +147,31 @@ int map_init(t_map *map, char **argv)
 	close(map->fd);
 	if (open_file(map) == 1)
 		return (-1);
-	allocate_map(map);
+	if (allocate_map(map) == -1)
+		return (-1);
 	if (!is_quad(map->map))
-		map_quad(map);
+		if (map_quad(map) == -1)
+			return (-1);
 	// show_map_info(*map);
 	close(map->fd);
 	return (0);
+}
+
+int parser(int argc, char **argv, t_map *map)
+{
+	int ret;
+
+	ret = 0;
+	struct_init(map, argv);
+	if (check_args(argc, argv) == -1)
+		ret = -1;	
+	if (map_init(map) == -1)
+		ret = -1;	
+	// show_map_info(map);
+
+	parse_map(map->map, map);
+	info_parse(map);
+	return (ret);
 }
 
 /**
@@ -147,20 +180,13 @@ int map_init(t_map *map, char **argv)
 int main(int argc, char **argv)
 {
 	t_map map;
+	int ret;
 
-	if (check_args(argc, argv) == -1)
-	{
-		free_mapS(&map);
-		return (-1);
-	}
-	if (map_init(&map, argv) == -1)
-	{
+	ret = 0;
+	if (parser(argc, argv, &map) == -1)
+		ret = -1;
 
-		free_mapS(&map);
-		return (-1);
-	}
-	// show_map_info(map);
-	parse_map(map.map, &map);
-	info_parse(&map);
+	
 	free_mapS(&map);
+	return (ret);
 }
