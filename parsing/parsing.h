@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "../minilibx-linux/mlx.h"
 
 // #define malloc(x) 0 // TESTAR PARA TODOS OS MALLOCS SEREM NULOS
 
@@ -50,5 +51,6 @@ void show_map_info(t_map map);
 void free_mapS(t_map *map);
 int allocate_map(t_map *map);
 void get_direction(char *s, char **direction);
+int parser(int argc, char **argv, t_map *map);
 
 #endif

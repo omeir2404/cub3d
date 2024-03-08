@@ -1,12 +1,12 @@
 NAME = 		cub3D
 SRC =       parsing/arg_check.c parsing/main_for_read.c parsing/map_parse.c \
-			parsing/info_parse.c parsing/working_utils.c
-LIBFT_DIR	= libft
+			parsing/info_parse.c parsing/working_utils.c parsing/parser.c
+LIBFT_DIR	= libft 
 LIBFT		= libft/libft.a
 MLX_DIR		= ./minilibx-linux
 MLX_INCLUDE = -Imlx_linux
 CC			= @cc
-CFLAGS		= -Wall -Wextra -Werror -g3# -fsanitize=address,undefined
+# CFLAGS		= -Wall -Wextra -Werror -g3# -fsanitize=address,undefined
 MLX_FLAGS 	= -L$(MLX_DIR) -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
 
 all:		$(NAME)
@@ -26,7 +26,7 @@ fclean:		clean
 			@rm -f $(NAME)
 
 mem: all
-			valgrind --log-file="val.log" --track-fds=yes --show-leak-kinds=all --leak-check=full ./cub3D maps/invalid3.cub
+			valgrind --log-file="val.log" --track-fds=yes --show-leak-kinds=all --leak-check=full ./cub3D maps/map1.cub
 
 lib:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) re
