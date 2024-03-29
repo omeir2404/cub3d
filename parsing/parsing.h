@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "../minilibx-linux/mlx.h"
+#include "../my_mlx/my_mlx.h"
 
 // #define malloc(x) 0 // TESTAR PARA TODOS OS MALLOCS SEREM NULOS
 

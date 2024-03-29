@@ -1,6 +1,7 @@
 NAME = 		cub3D
-SRC =       parsing/arg_check.c parsing/main_for_read.c parsing/map_parse.c \
-			parsing/info_parse.c parsing/working_utils.c parsing/parser.c
+SRC =       parsing/arg_check.c main_for_read.c parsing/map_parse.c \
+			parsing/info_parse.c parsing/working_utils.c parsing/parser.c \
+			my_mlx/key_press.c
 LIBFT_DIR	= libft 
 LIBFT		= libft/libft.a
 MLX_DIR		= ./minilibx-linux
