@@ -1,6 +1,5 @@
 #include "parsing.h"
 
-
 t_control *get_game_control(){
     static t_control control;
 

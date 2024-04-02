@@ -5,6 +5,7 @@
         "string": "c",
         "string_view": "c",
         "parsing.h": "c",
-        "mlx.h": "c"
+        "mlx.h": "c",
+        "my_mlx.h": "c"
     }
 }

@@ -6,7 +6,7 @@ LIBFT_DIR	= libft
 LIBFT		= libft/libft.a
 MLX_DIR		= ./minilibx-linux
 MLX_INCLUDE = -Imlx_linux
-CC			= @cc
+CC			= @cc -g
 # CFLAGS		= -Wall -Wextra -Werror -g3# -fsanitize=address,undefined
 MLX_FLAGS 	= -L$(MLX_DIR) -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
 
@@ -28,6 +28,8 @@ fclean:		clean
 
 mem: all
 			valgrind --log-file="val.log" --track-fds=yes --show-leak-kinds=all --leak-check=full ./cub3D maps/map1.cub
+run:  all
+			./$(NAME) maps/map1.cub
 
 lib:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) re

@@ -1,6 +1,16 @@
 #include "my_mlx.h"
 #include "../parsing/parsing.h"
 
+
+int	handle_keypress2(int keysym, t_data *data)
+{
+	if (keysym == 0xff52 || keysym == 0x77)// up or w
+        printf("right move\n");
+	if (keysym == 0xff53 || keysym == 0x64) // right or d
+        printf("right move\n");
+	return (0);
+}
+
 int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == 0xff1b)//escape
@@ -16,18 +26,10 @@ int	handle_keypress(int keysym, t_data *data)
 	return (0);
 }
 
-int	handle_keypress2(int keysym, t_data *data)
-{
-	if (keysym == 0xff52 || keysym == 0x77)// up or w
-        printf("right move\n");
-	if (keysym == 0xff53 || keysym == 0x64) // right or d
-        printf("right move\n");
-	return (0);
-}
 
 int	end_all(t_data *data, t_map *map)
 {
-	free_mapS(&map);
+	free_mapS(map);
 	free(data->mlx_ptr);
 	mlx_destroy_display(data->mlx_ptr);
 }
