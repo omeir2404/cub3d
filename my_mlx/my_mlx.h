@@ -19,5 +19,5 @@ struct s_data
 typedef struct s_data t_data;
 
 int	handle_keypress(int keysym, t_data *data);
-int	end_all(t_data *data, t_map *map);
+int	end_all(t_data *data);
 #endif

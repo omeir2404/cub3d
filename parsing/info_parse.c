@@ -14,6 +14,8 @@ int check_color_num(char **mat, char *name)
 
     i = 0;
     num = 0;
+    if (!mat)
+        return (-1);
     while (mat[i])
     {
         num = ft_atoi(mat[i]); 

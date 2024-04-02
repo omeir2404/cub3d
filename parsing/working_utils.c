@@ -47,6 +47,8 @@ void free_mat(char **matrix)
 	int i;
 
 	i = 0;
+	if (!matrix)
+		return ;
 	while(matrix[i])
 		free(matrix[i++]);
 	free(matrix);

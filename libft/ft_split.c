@@ -19,6 +19,8 @@ int	word_count(char const *s, char c)
 
 	word = 0;
 	is_c = 0;
+	if (!s)
+		return (-1);
 	while (*s)
 	{
 		if (*s != c && is_c == 0)
@@ -64,6 +66,8 @@ char	**ft_split(char const *s, char c)
 	index = -1;
 	size = word_count(s, c);
 	array = malloc(sizeof(char *) * (size + 1));
+	if (size == -1)
+		return (NULL);
 	if (!s || !array)
 		return (0);
 	temp = (char *)s;

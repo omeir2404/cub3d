@@ -14,7 +14,7 @@ int	handle_keypress2(int keysym, t_data *data)
 int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == 0xff1b)//escape
-		end_all(data, &data->map);
+		end_all(data);
 	if (keysym == 0xff52 || keysym == 0x77)
 		handle_keypress2(keysym, data);
 	if (keysym == 0xff53 || keysym == 0x64)
@@ -27,9 +27,10 @@ int	handle_keypress(int keysym, t_data *data)
 }
 
 
-int	end_all(t_data *data, t_map *map)
+int	end_all(t_data *data)
 {
-	free_mapS(map);
+	free_mapS(&data->map);
 	free(data->mlx_ptr);
 	mlx_destroy_display(data->mlx_ptr);
+	return (0);
 }
