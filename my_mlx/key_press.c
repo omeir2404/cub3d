@@ -30,7 +30,9 @@ int	handle_keypress(int keysym, t_data *data)
 int	end_all(t_data *data)
 {
 	free_mapS(&data->map);
-	free(data->mlx_ptr);
-	mlx_destroy_display(data->mlx_ptr);
+	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	// if (data->mlx_ptr)
+	// 	free(data->mlx_ptr);
+	// mlx_destroy_display(data->mlx_ptr);
 	return (0);
 }

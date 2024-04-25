@@ -2,9 +2,9 @@
 
 /**
  * @brief makes a given map(char **) into a quad map, adding spaces when necessary
- * 
- * @param map 
- * @param mat 
+ *
+ * @param map
+ * @param mat
  */
 void copy_into_quad(t_map *map, char **mat)
 {
@@ -15,7 +15,7 @@ void copy_into_quad(t_map *map, char **mat)
 	i = 0;
 	lines = 0;
 	lol = 0;
-	while(lines < map->mapSize)
+	while (lines < map->mapSize)
 	{
 		while (mat[lines][i] == ' ')
 		{
@@ -23,7 +23,7 @@ void copy_into_quad(t_map *map, char **mat)
 			lol++;
 			i++;
 		}
-		while(mat[lines][i] != '\n' && mat[lines][i] != '\r' && mat[lines][i] != '\0')
+		while (mat[lines][i] != '\n' && mat[lines][i] != '\r' && mat[lines][i] != '\0')
 		{
 			map->map[lines][lol] = mat[lines][i];
 			lol++;
@@ -52,11 +52,11 @@ void allocate_quad_map(t_map *map)
 /**
  * @brief calculates the size of the map when quad and the calls the function needed to do so
  * ATTENTION: map will need to be freed from copy_map_into_quad function that is called!!
- * @param map 
+ * @param map
  */
 int map_quad(t_map *map)
 {
-	char	**mat;
+	char **mat;
 	int i;
 	int size;
 
@@ -65,11 +65,11 @@ int map_quad(t_map *map)
 	mat = copy_mat(map);
 	if (!mat)
 		return (-1);
-	while(i < map->mapSize)
+	while (i < map->mapSize)
 	{
 		if (!mat[i])
 		{
-			printf("empty line in map?");	
+			printf("empty line in map?");
 			return (-1);
 		}
 		size = ft_strlen(mat[i]);
@@ -88,9 +88,9 @@ int map_quad(t_map *map)
 
 /**
  * @brief checks if the given map is quad
- * 
+ *
  * @return 1 if it is quad, else 0
-*/
+ */
 int is_quad(char **map)
 {
 	int i;
@@ -101,14 +101,14 @@ int is_quad(char **map)
 	size2 = 0;
 	size = ft_strlen(map[0]);
 	// printf("\n%c\n", map[0][size]);
-	while (map[0][size] == ' ' || map[0][size] == '\n'|| map[0][size] == '\0')
+	while (map[0][size] == ' ' || map[0][size] == '\n' || map[0][size] == '\0')
 		size--;
-	while(map[i])
+	while (map[i])
 	{
 		size2 = ft_strlen(map[i]);
 		if (size2 == 0 || size2 == 1)
 			return (-1);
-		while (map[i][size2] == ' ' || map[i][size2] == '\n'|| map[i][size2] == '\0')
+		while (map[i][size2] == ' ' || map[i][size2] == '\n' || map[i][size2] == '\0')
 			size2--;
 		if (size2 != size)
 			return (0);
@@ -126,14 +126,16 @@ void struct_init(t_map *map, char **argv)
 	map->ceiling = NULL;
 	map->floor = NULL;
 	map->map = NULL;
+	map->direction = 0;
 	map->found_direction = 0;
+	map->foundPlayer = 0;
 	map->file = argv[1];
 }
 
 /**
  * @brief initializes the t_map struct with the coressponding values
  * @return 0 if ok, -1 if not
-*/
+ */
 int map_init(t_map *map)
 {
 
@@ -163,12 +165,13 @@ int parser(int argc, char **argv, t_map *map)
 	ret = 0;
 	struct_init(map, argv);
 	if (check_args(argc, argv) == -1)
-		ret = -1;	
+		ret = -1;
 	if (map_init(map) == -1)
-		ret = -1;	
+		ret = -1;
 	// show_map_info(map);
-
-	parse_map(map->map, map);
-	info_parse(map);
+	if (parse_map(map->map, map) == -1)
+		ret = -1;
+	if (info_parse(map) == -1)
+		ret = -1;
 	return (ret);
 }

@@ -22,6 +22,9 @@ struct s_map
     int fd;
     char *file;
     int found_direction;
+    char direction;
+    int foundPlayer;
+    int playerPos[2];
     int longest_line;
     int mapSize;
 };
