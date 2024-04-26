@@ -9,14 +9,15 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "../DDA/dda.h"
 
 struct s_data
 {
     void *mlx_ptr;
     void *win_ptr;
 
-    int posX;
-    int posY; // x and y start position
+    double posX;
+    double posY; // x and y start position
     double dirX;
     double dirY; // initial direction vector
     double planeX;
@@ -24,6 +25,7 @@ struct s_data
     double time;    // time of current frame
     double oldTime; // time of previous frame
 
+    t_dda control;
     t_map map;
 };
 typedef struct s_data t_data;
