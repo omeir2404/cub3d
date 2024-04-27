@@ -10,6 +10,13 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <math.h>
+#include <sys/time.h>
+#include <X11/Xlib.h>
+
+#define SCREENWIDTH 480
+#define SCREENHEIGHT 480
+
 typedef struct s_img
 {
 	void *img;
@@ -71,4 +78,6 @@ typedef struct s_data t_data;
 
 int handle_keypress(int keysym, t_data *data);
 int end_all(t_data *data);
+int loop_handler(t_data *data);
+void setupData(t_data *data);
 #endif
