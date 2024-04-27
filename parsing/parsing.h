@@ -30,14 +30,14 @@ struct s_map
 };
 typedef struct s_map t_map;
 
-struct s_control
-{
-    t_map map;
-};
-typedef struct s_control t_control;
+// struct s_control
+// {
+//     t_map map;
+// };
+// typedef struct s_control t_control;
 
 
-t_control *get_game_control(); 
+// t_control *get_game_control(); 
 
 void free_mat(char **matrix);
 int check_args(int argc, char **argv);

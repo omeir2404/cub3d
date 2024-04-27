@@ -1,10 +1,10 @@
 #include "parsing.h"
 
-t_control *get_game_control(){
-    static t_control control;
+// t_control *get_game_control(){
+//     static t_control control;
 
-    return(&control); 
-}
+//     return(&control); 
+// }
 
 /**
  * @brief checks if the file given has the correct extension to be readable

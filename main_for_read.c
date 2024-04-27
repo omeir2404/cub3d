@@ -2,6 +2,8 @@
 #include "my_mlx/my_mlx.h"
 #include <X11/keysym.h>
 #include <math.h>
+#include <sys/time.h>
+#include <X11/Xlib.h>
 
 void square(t_data *data)
 {
@@ -87,144 +89,170 @@ void DDA(t_dda *control, t_data *data)
 	}
 }
 
+void my_mlx_pixel_put(t_img *img, int x, int y, int color)
+{
+	char *dst;
+
+	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
+
 void verLine(int x, int start, int end, int color, t_data *data)
 {
-	int i = start;
-	void *image = mlx_new_image(data->mlx_ptr, 0, x);
-	int pixel_bits;
-	int line_bytes;
-	int endian;
-	char *buffer = mlx_get_data_addr(image, &pixel_bits, &line_bytes, &endian);
-
-	for (int width = 0; width < 1; ++width)
-		for (int height = start; height < end; ++height)
-		{
-			int pixel = (width * line_bytes) + (height * 4);
-
-			if (endian == 1) // Most significant (Alpha) byte first
-			{
-				buffer[pixel + 0] = (color >> 24);
-				buffer[pixel + 1] = (color >> 16) & 0xFF;
-				buffer[pixel + 2] = (color >> 8) & 0xFF;
-				buffer[pixel + 3] = (color) & 0xFF;
-			}
-			else if (endian == 0) // Least significant (Blue) byte first
-			{
-				buffer[pixel + 0] = (color) & 0xFF;
-				buffer[pixel + 1] = (color >> 8) & 0xFF;
-				buffer[pixel + 2] = (color >> 16) & 0xFF;
-				buffer[pixel + 3] = (color >> 24);
-			}
-		}
-
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, image, x, 0);
+	for (int y = start; y < end; y++)
+		my_mlx_pixel_put(&data->img, x, y, color);
 }
 
-void rayCaster(t_data *data, t_dda *control)
+void raycastingLoop(t_dda *control, t_data *data)
 {
-	control->width = 480;
-	control->height = 480;
-	int done = 0;
-	while (done == 0)
+
+	for (int x = 0; x < control->width; x++)
 	{
-		for (int x = 0; x < control->width; x++)
+		control->cameraX = 2 * x / (double)control->width - 1; // x-coordinate in camera space
+		control->rayDirX = data->dirX + data->planeX * control->cameraX;
+		control->rayDirY = data->dirY + data->planeY * control->cameraX;
+		// which box of the map we're in
+		control->mapY = (int)data->posY;
+		control->mapX = (int)data->posX;
+
+		// length of ray from current position to next x or y-side
+		control->sideDistX;
+		control->sideDistY;
+
+		// length of ray from one x or y-side to next x or y-side
+		control->deltaDistX;
+		if (control->rayDirX == 0) // If ray is vertical, set a very large number to avoid division by zero
+			control->deltaDistX = 1e30;
+		else // Otherwise, calculate the absolute value of the reciprocal of control->rayDirX
+			control->deltaDistX = fabs(1 / control->rayDirX);
+		control->deltaDistY;
+		if (control->rayDirY == 0) // If ray is horizontal, set a very large number to avoid division by zero
+			control->deltaDistY = 1e30;
+		else // Otherwise, calculate the absolute value of the reciprocal of control->rayDirY
+			control->deltaDistY = fabs(1 / control->rayDirY);
+		control->perpWallDist; // later used for length of the ray
+
+		// Determine the direction to step in x or y-direction (either +1 or -1)
+		control->stepX;
+		control->stepY;
+
+		control->hit = 0; // was there a wall hit?
+		control->side;	  // was a NS or a EW wall hit?
+
+		// calculate step and initial sideDist
+		if (control->rayDirX < 0)
 		{
-			control->cameraX = 2 * x / (double)control->width - 1; // x-coordinate in camera space
-			control->rayDirX = data->dirX + data->planeX * control->cameraX;
-			control->rayDirY = data->dirY + data->planeY * control->cameraX;
-			// which box of the map we're in
-			control->mapY = (int)data->posY;
-			control->mapX = (int)data->posX;
-
-			// length of ray from current position to next x or y-side
-			control->sideDistX;
-			control->sideDistY;
-
-			// length of ray from one x or y-side to next x or y-side
-			control->deltaDistX;
-			if (control->rayDirX == 0) // If ray is vertical, set a very large number to avoid division by zero
-				control->deltaDistX = 1e30;
-			else // Otherwise, calculate the absolute value of the reciprocal of control->rayDirX
-				control->deltaDistX = fabs(1 / control->rayDirX);
-			control->deltaDistY;
-			if (control->rayDirY == 0) // If ray is horizontal, set a very large number to avoid division by zero
-				control->deltaDistY = 1e30;
-			else // Otherwise, calculate the absolute value of the reciprocal of control->rayDirY
-				control->deltaDistY = fabs(1 / control->rayDirY);
-			control->perpWallDist; // later used for length of the ray
-
-			// Determine the direction to step in x or y-direction (either +1 or -1)
-			control->stepX;
-			control->stepY;
-
-			control->hit = 0; // was there a wall hit?
-			control->side;	  // was a NS or a EW wall hit?
-
-			// calculate step and initial sideDist
-			if (control->rayDirX < 0)
-			{
-				control->stepX = -1;
-				control->sideDistX = (data->posX - control->mapX) * control->deltaDistX;
-			}
-			else
-			{
-				control->stepX = 1;
-				control->sideDistX = (control->mapX + 1.0 - data->posX) * control->deltaDistX;
-			}
-			if (control->rayDirY < 0)
-			{
-				control->stepY = -1;
-				control->sideDistY = (data->posY - control->mapY) * control->deltaDistY;
-			}
-			else
-			{
-				control->stepY = 1;
-				control->sideDistY = (control->mapY + 1.0 - data->posY) * control->deltaDistY;
-			}
-			DDA(control, data);
-			// Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
-			if (control->side == 0)
-				control->perpWallDist = (control->sideDistX - control->deltaDistX);
-			else
-				control->perpWallDist = (control->sideDistY - control->deltaDistY);
-
-			// Calculate height of line to draw on screen
-			int lineHeight = (int)(control->height / control->perpWallDist);
-
-			// calculate lowest and highest pixel to fill in current stripe
-			int drawStart = -lineHeight / 2 + control->height / 2;
-			if (drawStart < 0)
-				drawStart = 0;
-			int drawEnd = lineHeight / 2 + control->height / 2;
-			if (drawEnd >= control->height)
-				drawEnd = control->height - 1;
-
-			// choose wall color
-			int color;
-			switch (data->map.map[control->mapY][control->mapX])
-			{
-			case 1:
-				color = 0x00FF0000;
-				break; // red
-			case 2:
-				color = 0x0000FF00;
-				break; // green
-			default:
-				color = 0x000000FF;
-				break; // blue
-			}
-
-			// give x and y sides different brightness
-			if (control->side == 1)
-			{
-				color = color / 2;
-			}
-
-			// draw the pixels of the stripe as a vertical line
-			verLine(x, drawStart, drawEnd, color, data);
+			control->stepX = -1;
+			control->sideDistX = (data->posX - control->mapX) * control->deltaDistX;
 		}
+		else
+		{
+			control->stepX = 1;
+			control->sideDistX = (control->mapX + 1.0 - data->posX) * control->deltaDistX;
+		}
+		if (control->rayDirY < 0)
+		{
+			control->stepY = -1;
+			control->sideDistY = (data->posY - control->mapY) * control->deltaDistY;
+		}
+		else
+		{
+			control->stepY = 1;
+			control->sideDistY = (control->mapY + 1.0 - data->posY) * control->deltaDistY;
+		}
+		DDA(control, data);
+		// Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
+		if (control->side == 0)
+			control->perpWallDist = (control->sideDistX - control->deltaDistX);
+		else
+			control->perpWallDist = (control->sideDistY - control->deltaDistY);
+
+		// Calculate height of line to draw on screen
+		int lineHeight = (int)(control->height / control->perpWallDist);
+
+		// calculate lowest and highest pixel to fill in current stripe
+		int drawStart = -lineHeight / 2 + control->height / 2;
+		if (drawStart < 0)
+			drawStart = 0;
+		int drawEnd = lineHeight / 2 + control->height / 2;
+		if (drawEnd >= control->height)
+			drawEnd = control->height - 1;
+
+		// choose wall color
+		int color;
+		switch (data->map.map[control->mapY][control->mapX])
+		{
+		case 1:
+			color = 0x00FF0000;
+			break; // red
+		case 2:
+			color = 0x0000FF00;
+			break; // green
+		default:
+			color = 0x000000FF;
+			break; // blue
+		}
+
+		// give x and y sides different brightness
+		if (control->side == 1)
+		{
+			color = color / 2;
+		}
+
+		// draw the pixels of the stripe as a vertical line
+		verLine(x, drawStart, drawEnd, color, data);
 	}
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 }
+
+void redraw(t_data *data)
+{
+	// Put the image to the window
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
+
+	// Clear the image for the next frame
+	mlx_destroy_image(data->mlx_ptr, data->img.img);
+	data->img.img = mlx_new_image(data->mlx_ptr, 480, 480);
+	data->img.addr = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel, &data->img.line_length, &data->img.endian);
+}
+
+double getTicks()
+{
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000.0 + tv.tv_usec / 1000.0);
+}
+
+void Render(t_data *data, t_dda *control)
+{
+    control->width = 480;
+    control->height = 480;
+    int done = 0;
+    while (done == 0)
+    {
+
+        raycastingLoop(control, data); // calculates and draws vertical lines accordingly
+
+        // timing for input and FPS counter
+        data->oldTime = data->time;
+        data->time = getTicks();
+        data->frameTime = (data->time - data->oldTime) / 1000.0; // frameTime is the time this frame has taken, in seconds
+
+        redraw(data); // here its all drawn, in verLine it should add to buffer and use putimage not putpixel
+
+        // speed modifiers
+        data->moveSpeed = data->frameTime * 5.0; // the constant value is in squares/second
+        data->rotSpeed = data->frameTime * 3.0;  // the constant value is in radians/second
+		done = 1;
+    }
+}
+
+int loop_handler(t_data *data)
+{
+    Render(data, &data->control);
+    return (0);
+}
+
 
 /**
  * @brief test main
@@ -243,10 +271,15 @@ int main(int argc, char **argv)
 	setupData(&data);
 	data.mlx_ptr = mlx_init();
 	data.win_ptr = mlx_new_window(data.mlx_ptr, 480, 480, "cub3d");
+	data.img.img = mlx_new_image(data.mlx_ptr, 480, 480);
+	data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, &data.img.line_length, &data.img.endian);
+
 	// square(&data);
-	rayCaster(&data, &data.control);
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 	mlx_hook(data.win_ptr, 17, 131072, &end_all, &data);
+	// Render(&data, &data.control);
+    mlx_loop_hook(data.mlx_ptr, loop_handler, &data);
+
 	mlx_loop(data.mlx_ptr);
 	end_all(&data);
 	return (ret);

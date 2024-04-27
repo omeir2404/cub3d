@@ -9,7 +9,41 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "../DDA/dda.h"
+
+typedef struct s_img
+{
+	void *img;
+	char *addr;
+	int bits_per_pixel;
+	int line_length;
+	int endian;
+} t_img;
+
+struct s_dda
+{
+    int width;
+    int height;
+
+    double cameraX;
+    double rayDirX;
+    double rayDirY;
+    int mapY;
+    int mapX;
+
+    double sideDistX;
+    double sideDistY;
+
+    double deltaDistX;
+    double deltaDistY;
+    double perpWallDist;
+    int stepX;
+    int stepY;
+
+    int hit;
+
+    int side; 
+};
+typedef struct s_dda t_dda;
 
 struct s_data
 {
@@ -24,8 +58,13 @@ struct s_data
     double planeY; // the 2d raycaster version of camera plane
     double time;    // time of current frame
     double oldTime; // time of previous frame
+    double frameTime;
+
+    double moveSpeed;
+    double rotSpeed;
 
     t_dda control;
+    t_img img;
     t_map map;
 };
 typedef struct s_data t_data;
