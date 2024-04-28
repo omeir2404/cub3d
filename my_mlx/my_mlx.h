@@ -66,6 +66,9 @@ struct s_data
     double time;    // time of current frame
     double oldTime; // time of previous frame
     double frameTime;
+    int lineHeight;
+    int drawStart;
+    int drawEnd;
 
     double moveSpeed;
     double rotSpeed;

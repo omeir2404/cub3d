@@ -1,38 +1,23 @@
-==676211== Memcheck, a memory error detector
-==676211== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==676211== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==676211== Command: ./cub3D maps/map1.cub
-==676211== Parent PID: 676210
-==676211== 
-==676211== 
-==676211== FILE DESCRIPTORS: 10 open (3 std) at exit.
-==676211== Open file descriptor 26: /home/oharoon/.vscode-server/data/logs/20240421T115031/network.log
-==676211==    <inherited from parent>
-==676211== 
-==676211== Open file descriptor 23: /dev/ptmx
-==676211==    <inherited from parent>
-==676211== 
-==676211== Open file descriptor 22: /dev/ptmx
-==676211==    <inherited from parent>
-==676211== 
-==676211== Open file descriptor 21: /home/oharoon/.vscode-server/data/logs/20240421T115031/remoteagent.log
-==676211==    <inherited from parent>
-==676211== 
-==676211== Open file descriptor 20: /home/oharoon/.vscode-server/data/logs/20240421T115031/ptyhost.log
-==676211==    <inherited from parent>
-==676211== 
-==676211== Open file descriptor 19: /dev/urandom
-==676211==    <inherited from parent>
-==676211== 
-==676211== Open file descriptor 3: /home/oharoon/cub3d/val.log
-==676211==    <inherited from parent>
-==676211== 
-==676211== 
-==676211== HEAP SUMMARY:
-==676211==     in use at exit: 0 bytes in 0 blocks
-==676211==   total heap usage: 11,671 allocs, 11,671 frees, 535,430 bytes allocated
-==676211== 
-==676211== All heap blocks were freed -- no leaks are possible
-==676211== 
-==676211== For lists of detected and suppressed errors, rerun with: -s
-==676211== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 76 from 1)
+==691681== Memcheck, a memory error detector
+==691681== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==691681== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==691681== Command: ./cub3D maps/map1.cub
+==691681== Parent PID: 691680
+==691681== 
+==691681== 
+==691681== FILE DESCRIPTORS: 5 open (3 std) at exit.
+==691681== Open file descriptor 4: /dev/ptmx
+==691681==    <inherited from parent>
+==691681== 
+==691681== Open file descriptor 3: /home/oharoon/cub3d/val.log
+==691681==    <inherited from parent>
+==691681== 
+==691681== 
+==691681== HEAP SUMMARY:
+==691681==     in use at exit: 0 bytes in 0 blocks
+==691681==   total heap usage: 17,123 allocs, 17,123 frees, 744,230 bytes allocated
+==691681== 
+==691681== All heap blocks were freed -- no leaks are possible
+==691681== 
+==691681== For lists of detected and suppressed errors, rerun with: -s
+==691681== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 147 from 1)
