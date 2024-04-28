@@ -1,38 +1,38 @@
-==719481== Memcheck, a memory error detector
-==719481== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==719481== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==719481== Command: ./cub3D maps/map1.cub
-==719481== Parent PID: 719480
-==719481== 
-==719481== 
-==719481== FILE DESCRIPTORS: 10 open (3 std) at exit.
-==719481== Open file descriptor 26: /home/oharoon/.vscode-server/data/logs/20240421T115031/network.log
-==719481==    <inherited from parent>
-==719481== 
-==719481== Open file descriptor 23: /dev/ptmx
-==719481==    <inherited from parent>
-==719481== 
-==719481== Open file descriptor 22: /dev/ptmx
-==719481==    <inherited from parent>
-==719481== 
-==719481== Open file descriptor 21: /home/oharoon/.vscode-server/data/logs/20240421T115031/remoteagent.log
-==719481==    <inherited from parent>
-==719481== 
-==719481== Open file descriptor 20: /home/oharoon/.vscode-server/data/logs/20240421T115031/ptyhost.log
-==719481==    <inherited from parent>
-==719481== 
-==719481== Open file descriptor 19: /dev/urandom
-==719481==    <inherited from parent>
-==719481== 
-==719481== Open file descriptor 3: /home/oharoon/cub3d/val.log
-==719481==    <inherited from parent>
-==719481== 
-==719481== 
-==719481== HEAP SUMMARY:
-==719481==     in use at exit: 0 bytes in 0 blocks
-==719481==   total heap usage: 4,893 allocs, 4,893 frees, 269,122 bytes allocated
-==719481== 
-==719481== All heap blocks were freed -- no leaks are possible
-==719481== 
-==719481== For lists of detected and suppressed errors, rerun with: -s
-==719481== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 1)
+==736256== Memcheck, a memory error detector
+==736256== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==736256== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==736256== Command: ./cub3D maps/map1.cub
+==736256== Parent PID: 736255
+==736256== 
+==736256== 
+==736256== FILE DESCRIPTORS: 10 open (3 std) at exit.
+==736256== Open file descriptor 26: /home/oharoon/.vscode-server/data/logs/20240421T115031/network.log
+==736256==    <inherited from parent>
+==736256== 
+==736256== Open file descriptor 23: /dev/ptmx
+==736256==    <inherited from parent>
+==736256== 
+==736256== Open file descriptor 22: /dev/ptmx
+==736256==    <inherited from parent>
+==736256== 
+==736256== Open file descriptor 21: /home/oharoon/.vscode-server/data/logs/20240421T115031/remoteagent.log
+==736256==    <inherited from parent>
+==736256== 
+==736256== Open file descriptor 20: /home/oharoon/.vscode-server/data/logs/20240421T115031/ptyhost.log
+==736256==    <inherited from parent>
+==736256== 
+==736256== Open file descriptor 19: /dev/urandom
+==736256==    <inherited from parent>
+==736256== 
+==736256== Open file descriptor 3: /home/oharoon/cub3d/val.log
+==736256==    <inherited from parent>
+==736256== 
+==736256== 
+==736256== HEAP SUMMARY:
+==736256==     in use at exit: 0 bytes in 0 blocks
+==736256==   total heap usage: 37,685 allocs, 37,685 frees, 1,531,794 bytes allocated
+==736256== 
+==736256== All heap blocks were freed -- no leaks are possible
+==736256== 
+==736256== For lists of detected and suppressed errors, rerun with: -s
+==736256== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 42 from 1)

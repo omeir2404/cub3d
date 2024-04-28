@@ -69,6 +69,7 @@ struct s_data
     int lineHeight;
     int drawStart;
     int drawEnd;
+    int color;
 
     double moveSpeed;
     double rotSpeed;

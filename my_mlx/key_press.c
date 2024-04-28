@@ -2,6 +2,34 @@
 #include "../parsing/parsing.h"
 #include <math.h>
 
+void updateColor(t_data *data, t_dda *control)
+{
+    if (data->map.map[control->mapY][control->mapX] == '1')
+    {
+        data->color = 0x00FF0000; // red
+        if (fabs(data->dirX) < 1e-6 && data->dirY < -0.5)
+        {
+            if (control->side == 0)
+                data->color = 0x000000FF; // blue
+        }
+        else if (fabs(data->dirX) < 1e-6 && data->dirY > 0.5)
+        {
+            if (control->side == 0)
+                data->color = 0x00FFFF00; // yellow
+        }
+        else if (data->dirX > 0.5 && fabs(data->dirY) < 1e-6)
+        {
+            if (control->side == 0)
+                data->color = 0x00FF00FF; // magenta
+        }
+        else if (data->dirX < -0.5 && fabs(data->dirY) < 1e-6)
+        {
+            if (control->side == 0)
+                data->color = 0x00FFA500; // orange
+        }
+    }
+}
+
 int handle_keypress(int keycode, t_data *data)
 {
 	printf("handling keyPress\n");
@@ -9,18 +37,18 @@ int handle_keypress(int keycode, t_data *data)
 	if (keycode == XK_Up)
 	{
 		printf("foward\n");
-		if (data->map.map[(int)(data->posY + data->dirY * data->moveSpeed)][(int)(data->posX)] == 0)
+		if (data->map.map[(int)(data->posY + data->dirY * data->moveSpeed)][(int)(data->posX)] == '0')
 			data->posY += data->dirY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->dirX * data->moveSpeed)] == 0)
+		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->dirX * data->moveSpeed)] == '0')
 			data->posX += data->dirX * data->moveSpeed;
 	}
 	// move backwards if no wall behind you
 	if (keycode == XK_Down)
 	{
 		printf("backwards\n");
-		if (data->map.map[(int)(data->posY - data->dirY * data->moveSpeed)][(int)(data->posX)] == 0)
+		if (data->map.map[(int)(data->posY - data->dirY * data->moveSpeed)][(int)(data->posX)] == '0')
 			data->posY -= data->dirY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->dirX * data->moveSpeed)] == 0)
+		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->dirX * data->moveSpeed)] == '0')
 			data->posX -= data->dirX * data->moveSpeed;
 	}
 	// rotate to the right
@@ -33,6 +61,7 @@ int handle_keypress(int keycode, t_data *data)
 		double oldPlaneY = data->planeY;
 		data->planeY = data->planeY * cos(-data->rotSpeed) - data->planeX * sin(-data->rotSpeed);
 		data->planeX = oldPlaneY * sin(-data->rotSpeed) + data->planeX * cos(-data->rotSpeed);
+		updateColor(data, &data->control);
 	}
 	// rotate to the left
 	if (keycode == XK_Left)
@@ -44,6 +73,7 @@ int handle_keypress(int keycode, t_data *data)
 		double oldPlaneY = data->planeY;
 		data->planeY = data->planeY * cos(data->rotSpeed) - data->planeX * sin(data->rotSpeed);
 		data->planeX = oldPlaneY * sin(data->rotSpeed) + data->planeX * cos(data->rotSpeed);
+		updateColor(data, &data->control);
 	}
 
 	if (keycode == XK_Escape)

@@ -103,64 +103,64 @@ void verLine(int x, int start, int end, int color, t_data *data)
 		my_mlx_pixel_put(&data->img, x, y, color);
 }
 
-void raycastingLoop(t_dda *control, t_data *data)
+void setDdaValues(t_dda *control, t_data *data, int x)
 {
+	control->cameraX = 2 * x / (double)control->width - 1; // x-coordinate in camera space
+	control->rayDirX = data->dirX + data->planeX * control->cameraX;
+	control->rayDirY = data->dirY + data->planeY * control->cameraX;
+	// which box of the map we're in
+	control->mapY = (int)data->posY;
+	control->mapX = (int)data->posX;
 
-	for (int x = 0; x < control->width; x++)
+	// length of ray from current position to next x or y-side
+	control->sideDistX;
+	control->sideDistY;
+
+	// length of ray from one x or y-side to next x or y-side
+	control->deltaDistX;
+	if (control->rayDirX == 0) // If ray is vertical, set a very large number to avoid division by zero
+		control->deltaDistX = 1e30;
+	else // Otherwise, calculate the absolute value of the reciprocal of control->rayDirX
+		control->deltaDistX = fabs(1 / control->rayDirX);
+	control->deltaDistY;
+	if (control->rayDirY == 0) // If ray is horizontal, set a very large number to avoid division by zero
+		control->deltaDistY = 1e30;
+	else // Otherwise, calculate the absolute value of the reciprocal of control->rayDirY
+		control->deltaDistY = fabs(1 / control->rayDirY);
+	control->perpWallDist; // later used for length of the ray
+
+	// Determine the direction to step in x or y-direction (either +1 or -1)
+	control->stepX;
+	control->stepY;
+
+	control->hit = 0; // was there a wall hit?
+	control->side;	  // was a NS or a EW wall hit?
+
+	// calculate step and initial sideDist
+	if (control->rayDirX < 0)
 	{
-		control->cameraX = 2 * x / (double)control->width - 1; // x-coordinate in camera space
-		control->rayDirX = data->dirX + data->planeX * control->cameraX;
-		control->rayDirY = data->dirY + data->planeY * control->cameraX;
-		// which box of the map we're in
-		control->mapY = (int)data->posY;
-		control->mapX = (int)data->posX;
+		control->stepX = -1;
+		control->sideDistX = (data->posX - control->mapX) * control->deltaDistX;
+	}
+	else
+	{
+		control->stepX = 1;
+		control->sideDistX = (control->mapX + 1.0 - data->posX) * control->deltaDistX;
+	}
+	if (control->rayDirY < 0)
+	{
+		control->stepY = -1;
+		control->sideDistY = (data->posY - control->mapY) * control->deltaDistY;
+	}
+	else
+	{
+		control->stepY = 1;
+		control->sideDistY = (control->mapY + 1.0 - data->posY) * control->deltaDistY;
+	}
+}
 
-		// length of ray from current position to next x or y-side
-		control->sideDistX;
-		control->sideDistY;
-
-		// length of ray from one x or y-side to next x or y-side
-		control->deltaDistX;
-		if (control->rayDirX == 0) // If ray is vertical, set a very large number to avoid division by zero
-			control->deltaDistX = 1e30;
-		else // Otherwise, calculate the absolute value of the reciprocal of control->rayDirX
-			control->deltaDistX = fabs(1 / control->rayDirX);
-		control->deltaDistY;
-		if (control->rayDirY == 0) // If ray is horizontal, set a very large number to avoid division by zero
-			control->deltaDistY = 1e30;
-		else // Otherwise, calculate the absolute value of the reciprocal of control->rayDirY
-			control->deltaDistY = fabs(1 / control->rayDirY);
-		control->perpWallDist; // later used for length of the ray
-
-		// Determine the direction to step in x or y-direction (either +1 or -1)
-		control->stepX;
-		control->stepY;
-
-		control->hit = 0; // was there a wall hit?
-		control->side;	  // was a NS or a EW wall hit?
-
-		// calculate step and initial sideDist
-		if (control->rayDirX < 0)
-		{
-			control->stepX = -1;
-			control->sideDistX = (data->posX - control->mapX) * control->deltaDistX;
-		}
-		else
-		{
-			control->stepX = 1;
-			control->sideDistX = (control->mapX + 1.0 - data->posX) * control->deltaDistX;
-		}
-		if (control->rayDirY < 0)
-		{
-			control->stepY = -1;
-			control->sideDistY = (data->posY - control->mapY) * control->deltaDistY;
-		}
-		else
-		{
-			control->stepY = 1;
-			control->sideDistY = (control->mapY + 1.0 - data->posY) * control->deltaDistY;
-		}
-		DDA(control, data);
+void setDrawingValues(t_dda *control, t_data *data, int x)
+{
 		// Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
 		if (control->side == 0)
 			control->perpWallDist = (control->sideDistX - control->deltaDistX);
@@ -168,39 +168,74 @@ void raycastingLoop(t_dda *control, t_data *data)
 			control->perpWallDist = (control->sideDistY - control->deltaDistY);
 
 		// Calculate height of line to draw on screen
-		int lineHeight = (int)(control->height / control->perpWallDist);
+		data->lineHeight = (int)(control->height / control->perpWallDist);
 
 		// calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + control->height / 2;
-		if (drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + control->height / 2;
-		if (drawEnd >= control->height)
-			drawEnd = control->height - 1;
+		data->drawStart = -data->lineHeight / 2 + control->height / 2;
+		if (data->drawStart < 0)
+			data->drawStart = 0;
+		data->drawEnd = data->lineHeight / 2 + control->height / 2;
+		if (data->drawEnd >= control->height)
+			data->drawEnd = control->height - 1;
 
 		// choose wall color
-		int color;
-		switch (data->map.map[control->mapY][control->mapX])
+		if (data->map.map[control->mapY][control->mapX] == '1')
 		{
-		case 1:
-			color = 0x00FF0000;
-			break; // red
-		case 2:
-			color = 0x0000FF00;
-			break; // green
-		default:
-			color = 0x000000FF;
-			break; // blue
+			data->color = 0x00FF0000; // red
+			if (fabs(data->dirX) < 1e-6 && data->dirY < -0.5)
+			{
+				if (control->side == 0)
+					data->color = 0x000000FF; // blue
+				// else
+				// 	data->color = 0x0000FF00; // green
+			}
+			else if (fabs(data->dirX) < 1e-6 && data->dirY > 0.5)
+			{
+				if (control->side == 0)
+					data->color = 0x00FFFF00; // yellow
+				// else
+				// 	data->color = 0x0000FF00; // green
+			}
+			else if (data->dirX > 0.5 && fabs(data->dirY) < 1e-6)
+			{
+				if (control->side == 0)
+					data->color = 0x00FF00FF; // magenta
+				// else
+				// 	data->color = 0x0000FF00; // green
+			}
+			else if (data->dirX < -0.5 && fabs(data->dirY) < 1e-6)
+			{
+				if (control->side == 0)
+					data->color = 0x00FFA500; // orange
+				// else
+				// 	data->color = 0x0000FF00; // green
+			}
 		}
+		// else if (data->map.map[control->mapY][control->mapX] == '0')
+		// {
+		// 	data->color = 0x0000FF00; // green
+		// }
+		// else
+		// {
+		// 	data->color = 0x00000000; // black
+		// }
 
 		// give x and y sides different brightness
 		if (control->side == 1)
-		{
-			color = color / 2;
-		}
+			data->color = data->color / 2;
 
+}
+
+void raycastingLoop(t_dda *control, t_data *data)
+{
+
+	for (int x = 0; x < control->width; x++)
+	{
+		setDdaValues(control, data, x);
+		DDA(control, data);
+		setDrawingValues(control, data,x);
 		// draw the pixels of the stripe as a vertical line
-		verLine(x, drawStart, drawEnd, color, data);
+		verLine(x, data->drawStart, data->drawEnd, data->color, data);
 	}
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 }
