@@ -207,7 +207,7 @@ void wallColors(t_data *data, t_dda *control)
 
 void wallTextures(t_data *data, t_dda *control, int x)
 {
-	int texNum = 0;
+	int texNum = 3;//choose a number from 0-7 for different textures 
 	// texturing calculations
 	// if (data->map.map[control->mapX][control->mapY] == '1')
 	// 	int texNum =ft_atoi(data->map.map[control->mapX][control->mapY]) - 1; // 1 subtracted from it so that texture 0 can be used!
@@ -237,7 +237,8 @@ void wallTextures(t_data *data, t_dda *control, int x)
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 		int texY = (int)texPos & (TEXHEIGHT - 1);
 		texPos += step;
-		uint32_t color = data->texture[texNum][TEXHEIGHT * texY + texX];
+		// uint32_t color = data->texture[texNum][TEXHEIGHT * texY + texX];
+		uint32_t color = data->texture[texNum][TEXHEIGHT * texX + texY];
 		// make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 		if (control->side == 1)
 			color = (color >> 1) & 8355711;
@@ -338,7 +339,7 @@ void Render(t_data *data, t_dda *control)
 	//uncoment if using colors and not textures
 	// mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 	drawBuffer(data);
-	clearBuffer(data);
+	clearBuffer(data);//try removing this for fun(DON'T!!!)
 
 	// timing for input and FPS counter
 	data->oldTime = data->time;

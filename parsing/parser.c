@@ -158,10 +158,10 @@ int map_init(t_map *map)
 	return (0);
 }
 
-void	numberWalls(t_map map)
-{
-	
-}
+// void	numberWalls(t_map *map)
+// {
+
+// }
 
 int parser(int argc, char **argv, t_map *map)
 {
@@ -178,7 +178,7 @@ int parser(int argc, char **argv, t_map *map)
 		ret = -1;
 	if (info_parse(map) == -1)
 		ret = -1;
-	if (ret == 0)
-		numberWalls(map);
+	// if (ret == 0)
+	// 	numberWalls(map);
 	return (ret);
 }

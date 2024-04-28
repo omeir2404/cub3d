@@ -27,7 +27,7 @@ fclean:		clean
 			@rm -f $(NAME)
 
 mem: all
-			valgrind --log-file="val.log" --track-fds=yes --show-leak-kinds=all --leak-check=full ./cub3D maps/map1.cub
+			valgrind --log-file="val.log" --track-fds=yes --show-leak-kinds=all --leak-check=full -s ./cub3D maps/map1.cub
 run:  all
 			./$(NAME) maps/map1.cub
 

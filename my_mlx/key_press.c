@@ -32,9 +32,9 @@ void updateColor(t_data *data, t_dda *control)
 
 int handle_keypress(int keycode, t_data *data)
 {
-	printf("handling keyPress\n");
+	// printf("handling keyPress\n");
 	// move forward if no wall in front of you
-	if (keycode == XK_Up)
+	if (keycode == XK_Up || keycode == XK_w) // W
 	{
 		printf("foward\n");
 		if (data->map.map[(int)(data->posY + data->dirY * data->moveSpeed)][(int)(data->posX)] == '0')
@@ -43,7 +43,7 @@ int handle_keypress(int keycode, t_data *data)
 			data->posX += data->dirX * data->moveSpeed;
 	}
 	// move backwards if no wall behind you
-	if (keycode == XK_Down)
+	if (keycode == XK_Down || keycode == XK_s) // S
 	{
 		printf("backwards\n");
 		if (data->map.map[(int)(data->posY - data->dirY * data->moveSpeed)][(int)(data->posX)] == '0')
@@ -51,10 +51,29 @@ int handle_keypress(int keycode, t_data *data)
 		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->dirX * data->moveSpeed)] == '0')
 			data->posX -= data->dirX * data->moveSpeed;
 	}
+
+	if (keycode == XK_d) // D
+	{
+		printf("move right\n");
+		if (data->map.map[(int)(data->posY + data->planeY * data->moveSpeed)][(int)(data->posX)] == '0')
+			data->posY += data->planeY * data->moveSpeed;
+		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->planeX * data->moveSpeed)] == '0')
+			data->posX += data->planeX * data->moveSpeed;
+	}
+	// move backwards if no wall behind you
+	if (keycode == XK_a) // A
+	{
+		printf("move left\n");
+		if (data->map.map[(int)(data->posY - data->planeY * data->moveSpeed)][(int)(data->posX)] == '0')
+			data->posY -= data->planeY * data->moveSpeed;
+		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->planeX * data->moveSpeed)] == '0')
+			data->posX -= data->planeX * data->moveSpeed;
+	}
+
 	// rotate to the right
 	if (keycode == XK_Right)
 	{
-		printf("right\n");
+		printf("look right\n");
 		double oldDirY = data->dirY;
 		data->dirY = data->dirY * cos(-data->rotSpeed) - data->dirX * sin(-data->rotSpeed);
 		data->dirX = oldDirY * sin(-data->rotSpeed) + data->dirX * cos(-data->rotSpeed);
@@ -66,7 +85,7 @@ int handle_keypress(int keycode, t_data *data)
 	// rotate to the left
 	if (keycode == XK_Left)
 	{
-		printf("left\n");
+		printf("look left\n");
 		double oldDirY = data->dirY;
 		data->dirY = data->dirY * cos(data->rotSpeed) - data->dirX * sin(data->rotSpeed);
 		data->dirX = oldDirY * sin(data->rotSpeed) + data->dirX * cos(data->rotSpeed);
