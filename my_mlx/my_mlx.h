@@ -11,11 +11,14 @@
 #include <unistd.h>
 
 #include <math.h>
+#include <stdint.h>
 #include <sys/time.h>
 #include <X11/Xlib.h>
 
-#define SCREENWIDTH 480
+#define SCREENWIDTH 640
 #define SCREENHEIGHT 480
+#define TEXHEIGHT 64
+#define TEXWIDTH 64
 
 typedef struct s_img
 {
@@ -73,6 +76,9 @@ struct s_data
 
     double moveSpeed;
     double rotSpeed;
+
+    uint32_t buffer[SCREENHEIGHT][SCREENWIDTH];
+    uint32_t *texture[8];
 
     t_dda control;
     t_img img;
