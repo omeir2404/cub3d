@@ -27,6 +27,20 @@ void setupControl(t_dda *control)
 	control->side = 0;
 }
 
+int getColors(char *rgb)
+{
+	char **split = ft_split(rgb, ',');
+	int r = atoi(split[0]);
+	int g = atoi(split[1]);
+	int b = atoi(split[2]);
+
+	int hexColor = (r << 16) | (g << 8) | b;
+	for (int i = 0; i < 3; i++)
+		free(split[i]);
+	free(split);
+	return hexColor;
+}
+
 void setupData(t_data *data)
 {
 	for (int i = 0; i < 8; i++)
@@ -67,8 +81,10 @@ void setupData(t_data *data)
 	data->drawStart = 0;
 	data->drawEnd = 0;
 
-	data->ceilingColor = 0xA3CEEF; // blue
-	data->floorColor = 0xFC6998; // pink
+	data->ceilingColor = getColors(data->map.ceiling);
+	data->floorColor = getColors(data->map.floor);
+	// data->ceilingColor = 0xA3CEEF; // blue
+	// data->floorColor = 0xFC6998; // pink
 
 	setupControl(&data->control);
 }
@@ -217,7 +233,7 @@ void wallColors(t_data *data, t_dda *control)
 
 void wallTextures(t_data *data, t_dda *control, int x)
 {
-	int texNum = 3;//choose a number from 0-7 for different textures 
+	int texNum = 3; // choose a number from 0-7 for different textures
 	// texturing calculations
 	// if (data->map.map[control->mapX][control->mapY] == '1')
 	// 	int texNum =ft_atoi(data->map.map[control->mapX][control->mapY]) - 1; // 1 subtracted from it so that texture 0 can be used!
@@ -245,7 +261,7 @@ void wallTextures(t_data *data, t_dda *control, int x)
 	if (data->drawStart > 0 && data->drawStart <= SCREENHEIGHT)
 		for (int i = 0; i < data->drawStart; i++)
 			data->buffer[i][x] = data->ceilingColor;
-	
+
 	for (int y = data->drawStart; y < data->drawEnd; y++)
 	{
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
@@ -261,7 +277,6 @@ void wallTextures(t_data *data, t_dda *control, int x)
 	if (data->drawEnd > 0 && data->drawEnd <= SCREENHEIGHT)
 		for (int i = data->drawEnd; i < SCREENHEIGHT; i++)
 			data->buffer[i][x] = data->floorColor;
-	
 }
 
 void setDrawingValues(t_dda *control, t_data *data, int x)
@@ -319,37 +334,37 @@ double getTicks()
 
 void drawBuffer(t_data *data)
 {
-    // Create a new image
-    // t_img img;
-    // img.img = mlx_new_image(data->mlx_ptr, SCREENWIDTH, SCREENHEIGHT);
-    // img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	// Create a new image
+	// t_img img;
+	// img.img = mlx_new_image(data->mlx_ptr, SCREENWIDTH, SCREENHEIGHT);
+	// img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-    // Copy the buffer to the image
-    for (int y = 0; y < SCREENHEIGHT; y++)
-    {
-        for (int x = 0; x < SCREENWIDTH; x++)
-        {
+	// Copy the buffer to the image
+	for (int y = 0; y < SCREENHEIGHT; y++)
+	{
+		for (int x = 0; x < SCREENWIDTH; x++)
+		{
 			// if (data->buffer[y][x] == 0)
 			// 	my_mlx_pixel_put(&data->img,x, y, data->ceilingColor);
 			// else{
-            uint32_t color = data->buffer[y][x];
-            my_mlx_pixel_put(&data->img, x, y, color);
+			uint32_t color = data->buffer[y][x];
+			my_mlx_pixel_put(&data->img, x, y, color);
 			// }
-        }
-    }
+		}
+	}
 
-    // Draw the image to the window
-    // mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
+	// Draw the image to the window
+	// mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 }
 void clearBuffer(t_data *data)
 {
-    for (int y = 0; y < SCREENHEIGHT; y++)
-    {
-        for (int x = 0; x < SCREENWIDTH; x++)
-        {
-            data->buffer[y][x] = 0;
-        }
-    }
+	for (int y = 0; y < SCREENHEIGHT; y++)
+	{
+		for (int x = 0; x < SCREENWIDTH; x++)
+		{
+			data->buffer[y][x] = 0;
+		}
+	}
 }
 
 void Render(t_data *data, t_dda *control)
@@ -358,10 +373,10 @@ void Render(t_data *data, t_dda *control)
 	control->height = SCREENHEIGHT;
 
 	raycastingLoop(control, data); // calculates and draws vertical lines accordingly
-	//uncoment if using colors and not textures
-	// mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
+	// uncoment if using colors and not textures
+	//  mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 	drawBuffer(data);
-	clearBuffer(data);//try removing this for fun(DON'T!!!)
+	clearBuffer(data); // try removing this for fun(DON'T!!!)
 
 	// timing for input and FPS counter
 	data->oldTime = data->time;

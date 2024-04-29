@@ -57,6 +57,8 @@ int main(int argc, char **argv)
 		free_mapS(&data.map);
 		return -1;
 	}
+	// printf("floor: %s", data.map.floor);
+	// printf("ceiling: %s", data.map.ceiling);
 
 	setupData(&data);
 	generateTextures(&data);

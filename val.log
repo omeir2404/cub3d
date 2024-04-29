@@ -1,41 +1,41 @@
-==858857== Memcheck, a memory error detector
-==858857== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==858857== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==858857== Command: ./cub3D maps/map1.cub
-==858857== Parent PID: 858856
-==858857== 
-==858857== 
-==858857== FILE DESCRIPTORS: 10 open (3 std) at exit.
-==858857== Open file descriptor 26: /home/oharoon/.vscode-server/data/logs/20240421T115031/network.log
-==858857==    <inherited from parent>
-==858857== 
-==858857== Open file descriptor 23: /dev/ptmx
-==858857==    <inherited from parent>
-==858857== 
-==858857== Open file descriptor 22: /dev/ptmx
-==858857==    <inherited from parent>
-==858857== 
-==858857== Open file descriptor 21: /home/oharoon/.vscode-server/data/logs/20240421T115031/remoteagent.log
-==858857==    <inherited from parent>
-==858857== 
-==858857== Open file descriptor 20: /home/oharoon/.vscode-server/data/logs/20240421T115031/ptyhost.log
-==858857==    <inherited from parent>
-==858857== 
-==858857== Open file descriptor 19: /dev/urandom
-==858857==    <inherited from parent>
-==858857== 
-==858857== Open file descriptor 3: /home/oharoon/cub3d/val.log
-==858857==    <inherited from parent>
-==858857== 
-==858857== 
-==858857== HEAP SUMMARY:
-==858857==     in use at exit: 0 bytes in 0 blocks
-==858857==   total heap usage: 2,134 allocs, 2,134 frees, 293,598 bytes allocated
-==858857== 
-==858857== All heap blocks were freed -- no leaks are possible
-==858857== 
-==858857== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 17 from 1)
---858857-- 
---858857-- used_suppression:     17 X on SUSE11 writev uninit padding /usr/libexec/valgrind/default.supp:377
-==858857== 
-==858857== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 17 from 1)
+==923490== Memcheck, a memory error detector
+==923490== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==923490== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==923490== Command: ./cub3D maps/map1.cub
+==923490== Parent PID: 923489
+==923490== 
+==923490== 
+==923490== FILE DESCRIPTORS: 10 open (3 std) at exit.
+==923490== Open file descriptor 26: /home/oharoon/.vscode-server/data/logs/20240421T115031/network.log
+==923490==    <inherited from parent>
+==923490== 
+==923490== Open file descriptor 23: /dev/ptmx
+==923490==    <inherited from parent>
+==923490== 
+==923490== Open file descriptor 22: /dev/ptmx
+==923490==    <inherited from parent>
+==923490== 
+==923490== Open file descriptor 21: /home/oharoon/.vscode-server/data/logs/20240421T115031/remoteagent.log
+==923490==    <inherited from parent>
+==923490== 
+==923490== Open file descriptor 20: /home/oharoon/.vscode-server/data/logs/20240421T115031/ptyhost.log
+==923490==    <inherited from parent>
+==923490== 
+==923490== Open file descriptor 19: /dev/urandom
+==923490==    <inherited from parent>
+==923490== 
+==923490== Open file descriptor 3: /home/oharoon/cub3d/val.log
+==923490==    <inherited from parent>
+==923490== 
+==923490== 
+==923490== HEAP SUMMARY:
+==923490==     in use at exit: 0 bytes in 0 blocks
+==923490==   total heap usage: 2,483 allocs, 2,483 frees, 301,588 bytes allocated
+==923490== 
+==923490== All heap blocks were freed -- no leaks are possible
+==923490== 
+==923490== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 5 from 1)
+--923490-- 
+--923490-- used_suppression:      5 X on SUSE11 writev uninit padding /usr/libexec/valgrind/default.supp:377
+==923490== 
+==923490== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 5 from 1)

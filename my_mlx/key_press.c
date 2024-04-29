@@ -80,7 +80,7 @@ int handle_keypress(int keycode, t_data *data)
 		double oldPlaneY = data->planeY;
 		data->planeY = data->planeY * cos(-data->rotSpeed) - data->planeX * sin(-data->rotSpeed);
 		data->planeX = oldPlaneY * sin(-data->rotSpeed) + data->planeX * cos(-data->rotSpeed);
-		updateColor(data, &data->control);
+		// updateColor(data, &data->control);
 	}
 	// rotate to the left
 	if (keycode == XK_Left)
@@ -92,7 +92,7 @@ int handle_keypress(int keycode, t_data *data)
 		double oldPlaneY = data->planeY;
 		data->planeY = data->planeY * cos(data->rotSpeed) - data->planeX * sin(data->rotSpeed);
 		data->planeX = oldPlaneY * sin(data->rotSpeed) + data->planeX * cos(data->rotSpeed);
-		updateColor(data, &data->control);
+		// updateColor(data, &data->control);
 	}
 
 	if (keycode == XK_Escape)
