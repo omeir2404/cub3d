@@ -64,6 +64,11 @@ void setupData(t_data *data)
 	data->planeY = data->dirX;
 	data->time = 0;
 	data->oldTime = 0;
+	data->drawStart = 0;
+	data->drawEnd = 0;
+
+	data->ceilingColor = 0xA3CEEF; // blue
+	data->floorColor = 0xFC6998; // pink
 
 	setupControl(&data->control);
 }
@@ -102,8 +107,13 @@ void my_mlx_pixel_put(t_img *img, int x, int y, int color)
 
 void verLine(int x, int start, int end, int color, t_data *data)
 {
-	for (int y = start; y < end; y++)
-		my_mlx_pixel_put(&data->img, x, y, color);
+	// printf("start value: %d\n", start);
+	// for (int i = 0; i < start; i++)
+	// 	my_mlx_pixel_put(&data->img, x, i, data->ceilingColor);
+	// for (int y = start; y < end; y++)
+	// 	my_mlx_pixel_put(&data->img, x, y, color);
+	// for (int i = end; i < SCREENHEIGHT; i++)
+	// 	my_mlx_pixel_put(&data->img, x, i, data->floorColor);
 }
 
 void setDdaValues(t_dda *control, t_data *data, int x)
@@ -232,6 +242,10 @@ void wallTextures(t_data *data, t_dda *control, int x)
 	double step = 1.0 * TEXHEIGHT / data->lineHeight;
 	// Starting texture coordinate
 	double texPos = (data->drawStart - pitch - control->height / 2 + data->lineHeight / 2) * step;
+	if (data->drawStart > 0 && data->drawStart <= SCREENHEIGHT)
+		for (int i = 0; i < data->drawStart; i++)
+			data->buffer[i][x] = data->ceilingColor;
+	
 	for (int y = data->drawStart; y < data->drawEnd; y++)
 	{
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
@@ -244,6 +258,10 @@ void wallTextures(t_data *data, t_dda *control, int x)
 			color = (color >> 1) & 8355711;
 		data->buffer[y][x] = color;
 	}
+	if (data->drawEnd > 0 && data->drawEnd <= SCREENHEIGHT)
+		for (int i = data->drawEnd; i < SCREENHEIGHT; i++)
+			data->buffer[i][x] = data->floorColor;
+	
 }
 
 void setDrawingValues(t_dda *control, t_data *data, int x)
@@ -277,7 +295,7 @@ void raycastingLoop(t_dda *control, t_data *data)
 		DDA(control, data);
 		setDrawingValues(control, data, x);
 		// draw the pixels of the stripe as a vertical line
-		verLine(x, data->drawStart, data->drawEnd, data->color, data);
+		// verLine(x, data->drawStart, data->drawEnd, data->color, data);
 	}
 }
 
@@ -311,13 +329,17 @@ void drawBuffer(t_data *data)
     {
         for (int x = 0; x < SCREENWIDTH; x++)
         {
+			// if (data->buffer[y][x] == 0)
+			// 	my_mlx_pixel_put(&data->img,x, y, data->ceilingColor);
+			// else{
             uint32_t color = data->buffer[y][x];
             my_mlx_pixel_put(&data->img, x, y, color);
+			// }
         }
     }
 
     // Draw the image to the window
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
+    // mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 }
 void clearBuffer(t_data *data)
 {
@@ -332,8 +354,8 @@ void clearBuffer(t_data *data)
 
 void Render(t_data *data, t_dda *control)
 {
-	control->width = 640;
-	control->height = 480;
+	control->width = SCREENWIDTH;
+	control->height = SCREENHEIGHT;
 
 	raycastingLoop(control, data); // calculates and draws vertical lines accordingly
 	//uncoment if using colors and not textures

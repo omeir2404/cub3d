@@ -60,6 +60,9 @@ struct s_data
     void *mlx_ptr;
     void *win_ptr;
 
+    int floorColor;
+    int ceilingColor;
+
     double posX;
     double posY; // x and y start position
     double dirX;

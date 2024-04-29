@@ -37,36 +37,36 @@ int handle_keypress(int keycode, t_data *data)
 	if (keycode == XK_Up || keycode == XK_w) // W
 	{
 		printf("foward\n");
-		if (data->map.map[(int)(data->posY + data->dirY * data->moveSpeed)][(int)(data->posX)] == '0')
+		if (data->map.map[(int)(data->posY + data->dirY * data->moveSpeed)][(int)(data->posX)] != '1')
 			data->posY += data->dirY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->dirX * data->moveSpeed)] == '0')
+		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->dirX * data->moveSpeed)] != '1')
 			data->posX += data->dirX * data->moveSpeed;
 	}
 	// move backwards if no wall behind you
 	if (keycode == XK_Down || keycode == XK_s) // S
 	{
 		printf("backwards\n");
-		if (data->map.map[(int)(data->posY - data->dirY * data->moveSpeed)][(int)(data->posX)] == '0')
+		if (data->map.map[(int)(data->posY - data->dirY * data->moveSpeed)][(int)(data->posX)] != '1')
 			data->posY -= data->dirY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->dirX * data->moveSpeed)] == '0')
+		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->dirX * data->moveSpeed)] != '1')
 			data->posX -= data->dirX * data->moveSpeed;
 	}
 
 	if (keycode == XK_d) // D
 	{
 		printf("move right\n");
-		if (data->map.map[(int)(data->posY + data->planeY * data->moveSpeed)][(int)(data->posX)] == '0')
+		if (data->map.map[(int)(data->posY + data->planeY * data->moveSpeed)][(int)(data->posX)] != '1')
 			data->posY += data->planeY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->planeX * data->moveSpeed)] == '0')
+		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->planeX * data->moveSpeed)] != '1')
 			data->posX += data->planeX * data->moveSpeed;
 	}
 	// move backwards if no wall behind you
 	if (keycode == XK_a) // A
 	{
 		printf("move left\n");
-		if (data->map.map[(int)(data->posY - data->planeY * data->moveSpeed)][(int)(data->posX)] == '0')
+		if (data->map.map[(int)(data->posY - data->planeY * data->moveSpeed)][(int)(data->posX)] != '1')
 			data->posY -= data->planeY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->planeX * data->moveSpeed)] == '0')
+		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->planeX * data->moveSpeed)] != '1')
 			data->posX -= data->planeX * data->moveSpeed;
 	}
 
