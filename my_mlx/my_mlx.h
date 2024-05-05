@@ -92,5 +92,17 @@ typedef struct s_data t_data;
 int handle_keypress(int keysym, t_data *data);
 int end_all(t_data *data);
 int loop_handler(t_data *data);
+
+double getTicks(void);
+void wallColors(t_data *data, t_dda *control);
+void verLine(int x, int start, int end, int color, t_data *data);
+void setDdaValues(t_dda *control, t_data *data, int x);
+void DDA(t_dda *control, t_data *data);
+void my_mlx_pixel_put(t_img *img, int x, int y, int color);
 void setupData(t_data *data);
+int getColors(char *rgb);
+void setupControl(t_dda *control);
+void clearBuffer(t_data *data);
+void redraw(t_data *data);
+
 #endif
