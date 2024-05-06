@@ -10,7 +10,8 @@ int getDirectionedTexture(t_data *data)
 		return EAST;
 	else if (data->control.side == 0 && data->control.rayDirX > 0)
 		return WEST;
-
+	
+	return 0;
 }
 
 /**
@@ -58,7 +59,7 @@ void wallTextures(t_data *data, t_dda *control, int x, int texNum)
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 		int texY = (int)texPos & (TEXHEIGHT - 1);
 		texPos += step;
-		uint32_t color = data->adrress[texNum][TEXHEIGHT * texX + texY];
+		uint32_t color = data->adrress[texNum][TEXHEIGHT * texY + texX];
 		// uint32_t color = getDirectionedTexture(texX, texY, data);
 		// make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 		if (control->side == 1)
@@ -123,8 +124,8 @@ void drawBuffer(t_data *data)
 
 void Render(t_data *data, t_dda *control)
 {
-	control->width = SCREENWIDTH;
 	control->height = SCREENHEIGHT;
+	control->width = SCREENWIDTH;
 
 	raycastingLoop(control, data); // calculates and draws vertical lines accordingly
 	// uncoment if using colors and not textures

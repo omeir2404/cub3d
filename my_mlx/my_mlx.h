@@ -15,8 +15,8 @@
 #include <sys/time.h>
 #include <X11/Xlib.h>
 
-#define SCREENWIDTH 640
-#define SCREENHEIGHT 480
+#define SCREENWIDTH 1080
+#define SCREENHEIGHT 500
 #define TEXHEIGHT 64
 #define TEXWIDTH 64
 #define NORTH 0
