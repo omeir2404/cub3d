@@ -1,23 +1,30 @@
 #include "my_mlx.h"
 
-// void square(t_data *data)
-// {
-// 	for (int i = 100; i < 200; i++)
-// 		for (int j = 100; j < 200; j++)
-// 			mlx_pixel_put(data->mlx_ptr, data->win_ptr, i, j, 0x00FF0000);
-// }
-
-
-
-
-
-
-
-
-
-void wallTextures(t_data *data, t_dda *control, int x)
+int getDirectionedTexture(t_data *data)
 {
-	int texNum = 3; // choose a number from 0-7 for different textures
+	// SOUTH
+	if (data->control.side == 1 && data->control.rayDirY < 0)
+		return 0;
+	else if (data->control.side == 1 && data->control.rayDirY > 0) // NORTH
+		return 1;
+	else if (data->control.side == 0 && data->control.rayDirX < 0) // WEST
+		return 2;
+	else if (data->control.side == 0 && data->control.rayDirX > 0) // EAST
+		return 3;
+	// else
+	// 	return 5;
+}
+
+/**
+ * @brief The wall textures for the given x column
+ *
+ * @param data
+ * @param control
+ * @param x
+ */
+void wallTextures(t_data *data, t_dda *control, int x, int texNum)
+{
+	// int texNum = 3; // choose a number from 0-7 for different textures
 	// texturing calculations
 	// if (data->map.map[control->mapX][control->mapY] == '1')
 	// 	int texNum =ft_atoi(data->map.map[control->mapX][control->mapY]) - 1; // 1 subtracted from it so that texture 0 can be used!
@@ -41,6 +48,8 @@ void wallTextures(t_data *data, t_dda *control, int x)
 	// How much to increase the texture coordinate per screen pixel
 	double step = 1.0 * TEXHEIGHT / data->lineHeight;
 	// Starting texture coordinate
+
+	// CEILING COLOR
 	double texPos = (data->drawStart - pitch - control->height / 2 + data->lineHeight / 2) * step;
 	if (data->drawStart > 0 && data->drawStart <= SCREENHEIGHT)
 		for (int i = 0; i < data->drawStart; i++)
@@ -51,13 +60,15 @@ void wallTextures(t_data *data, t_dda *control, int x)
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 		int texY = (int)texPos & (TEXHEIGHT - 1);
 		texPos += step;
-		// uint32_t color = data->texture[texNum][TEXHEIGHT * texY + texX];
 		uint32_t color = data->texture[texNum][TEXHEIGHT * texX + texY];
+		// uint32_t color = getDirectionedTexture(texX, texY, data);
 		// make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 		if (control->side == 1)
 			color = (color >> 1) & 8355711;
 		data->buffer[y][x] = color;
 	}
+
+	// FLOOR COLOR
 	if (data->drawEnd > 0 && data->drawEnd <= SCREENHEIGHT)
 		for (int i = data->drawEnd; i < SCREENHEIGHT; i++)
 			data->buffer[i][x] = data->floorColor;
@@ -82,7 +93,8 @@ void setDrawingValues(t_dda *control, t_data *data, int x)
 	if (data->drawEnd >= control->height)
 		data->drawEnd = control->height - 1;
 	// wallColors(data, control);
-	wallTextures(data, control, x);
+	int texNum = getDirectionedTexture(data);
+	wallTextures(data, control, x, texNum);
 }
 
 void raycastingLoop(t_dda *control, t_data *data)
@@ -98,32 +110,17 @@ void raycastingLoop(t_dda *control, t_data *data)
 	}
 }
 
-
-
-
 void drawBuffer(t_data *data)
 {
-	// Create a new image
-	// t_img img;
-	// img.img = mlx_new_image(data->mlx_ptr, SCREENWIDTH, SCREENHEIGHT);
-	// img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-
 	// Copy the buffer to the image
 	for (int y = 0; y < SCREENHEIGHT; y++)
 	{
 		for (int x = 0; x < SCREENWIDTH; x++)
 		{
-			// if (data->buffer[y][x] == 0)
-			// 	my_mlx_pixel_put(&data->img,x, y, data->ceilingColor);
-			// else{
 			uint32_t color = data->buffer[y][x];
 			my_mlx_pixel_put(&data->img, x, y, color);
-			// }
 		}
 	}
-
-	// Draw the image to the window
-	// mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 }
 
 void Render(t_data *data, t_dda *control)
