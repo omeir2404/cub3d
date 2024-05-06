@@ -199,8 +199,9 @@ void my_mlx_pixel_put(t_img *img, int x, int y, int color)
  */
 void setupData(t_data *data)
 {
-	for (int i = 0; i < 8; i++)
-		data->texture[i] = (uint32_t *)malloc(TEXWIDTH * TEXHEIGHT * sizeof(uint32_t));
+	// for (int i = 0; i < 4; i++)
+	// 	data->texture[i] = NULL;
+		// data->texture[i] = (uint32_t *)malloc(TEXWIDTH * TEXHEIGHT * sizeof(uint32_t));
 	data->mlx_ptr = mlx_init();
 	data->win_ptr = mlx_new_window(data->mlx_ptr, SCREENWIDTH, SCREENHEIGHT, "cub3d");
 	data->img.img = mlx_new_image(data->mlx_ptr, SCREENWIDTH, SCREENHEIGHT);

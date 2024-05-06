@@ -105,8 +105,17 @@ int handle_keypress(int keycode, t_data *data)
 
 int end_all(t_data *data)
 {
-	for (int i = 0; i < 8; i++)
-		free(data->texture[i]);
+	// for (int i = 0; i < 8; i++)
+	// 	free(data->texture[i]);
+	int i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if(data->texture[i])
+			mlx_destroy_image(data->mlx_ptr, (void *)data->texture[i]);
+		i++;
+	}
 	if (data && data->mlx_ptr && data->win_ptr)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	if (data->img.img)

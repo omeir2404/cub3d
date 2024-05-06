@@ -19,6 +19,11 @@
 #define SCREENHEIGHT 480
 #define TEXHEIGHT 64
 #define TEXWIDTH 64
+#define NORTH 0
+#define SOUTH 1
+#define EAST 2
+#define WEST 3
+
 
 typedef struct s_img
 {
@@ -81,7 +86,8 @@ struct s_data
     double rotSpeed;
 
     uint32_t buffer[SCREENHEIGHT][SCREENWIDTH];
-    uint32_t *texture[8];
+    uint32_t *texture[4];
+    uint32_t    *adrress[4];
 
     t_dda control;
     t_img img;

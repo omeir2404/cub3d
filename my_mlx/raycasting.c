@@ -2,17 +2,15 @@
 
 int getDirectionedTexture(t_data *data)
 {
-	// SOUTH
 	if (data->control.side == 1 && data->control.rayDirY < 0)
-		return 0;
-	else if (data->control.side == 1 && data->control.rayDirY > 0) // NORTH
-		return 1;
-	else if (data->control.side == 0 && data->control.rayDirX < 0) // WEST
-		return 2;
-	else if (data->control.side == 0 && data->control.rayDirX > 0) // EAST
-		return 3;
-	// else
-	// 	return 5;
+		return NORTH;
+	else if (data->control.side == 1 && data->control.rayDirY > 0)
+		return SOUTH;
+	else if (data->control.side == 0 && data->control.rayDirX < 0)
+		return EAST;
+	else if (data->control.side == 0 && data->control.rayDirX > 0)
+		return WEST;
+
 }
 
 /**
@@ -60,7 +58,7 @@ void wallTextures(t_data *data, t_dda *control, int x, int texNum)
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 		int texY = (int)texPos & (TEXHEIGHT - 1);
 		texPos += step;
-		uint32_t color = data->texture[texNum][TEXHEIGHT * texX + texY];
+		uint32_t color = data->adrress[texNum][TEXHEIGHT * texX + texY];
 		// uint32_t color = getDirectionedTexture(texX, texY, data);
 		// make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 		if (control->side == 1)

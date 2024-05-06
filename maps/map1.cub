@@ -1,7 +1,7 @@
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
+NO /home/oharoon/cub3d/textures/lastisland.xpm
+SO /home/oharoon/cub3d/textures/pedra.xpm
+WE /home/oharoon/cub3d/textures/lastsea.xpm
+EA /home/oharoon/cub3d/textures/relva.xpm
 F 252,105,152
 C 163,206,239
 
