@@ -1,7 +1,10 @@
 NAME = 		cub3D
-SRC =       parsing/arg_check.c main_for_read.c parsing/map_parse.c \
-			parsing/info_parse.c parsing/working_utils.c parsing/parser.c \
-			my_mlx/key_press.c my_mlx/raycasting.c my_mlx/dontTouchFuncts.c
+SRC =       parsing/arg_check.c main.c parsing/map_parse.c \
+			parsing/info_parse.c parsing/working_utils.c parsing/working_utils2.c \
+			parsing/working_utils3.c parsing/map_parse2.c parsing/parser.c \
+			my_mlx/key_press.c my_mlx/raycasting.c my_mlx/dontTouchFuncts.c \
+			my_mlx/utils.c my_mlx/utils2.c my_mlx/utils3.c my_mlx/dontTouchFuncts2.c \
+			my_mlx/setDdaValues.c my_mlx/utils4.c
 LIBFT_DIR	= libft 
 LIBFT		= libft/libft.a
 MLX_DIR		= ./minilibx-linux

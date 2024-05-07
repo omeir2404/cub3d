@@ -33,8 +33,6 @@ void	ft_putnbr_fd(int n, int fd)
 	else
 	{
 		if (n != -2147483648)
-		{
 			ft_putchar_fd(n + 48, fd);
-		}	
 	}
 }

@@ -12,7 +12,7 @@
 
 #ifndef LIBFT_H
 # define LIBFT_H
-#define BUFFER_SIZE 1
+# define BUFFER_SIZE 1
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -78,10 +78,9 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
 
 //GNL
-int	ft_strlen_gnl(char *str);
-int	ft_check_next_line(char *str);
-char	*make_line(char *line, char *buff);
-char	*get_next_line(int fd);
-
+int				ft_strlen_gnl(char *str);
+int				ft_check_next_line(char *str);
+char			*make_line(char *line, char *buff);
+char			*get_next_line(int fd);
 
 #endif

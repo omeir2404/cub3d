@@ -1,114 +1,140 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   my_mlx.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oharoon <oharoon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/07 17:00:55 by oharoon           #+#    #+#             */
+/*   Updated: 2024/05/07 19:49:09 by oharoon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MY_MLX_H
-#define MY_MLX_H
-#include "../parsing/parsing.h"
-#include <stdio.h>
-#include <string.h>
-#include <X11/X.h>
-#include <X11/keysym.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
+# define MY_MLX_H
+# include "../parsing/parsing.h"
+# include <stdio.h>
+# include <string.h>
+# include <X11/X.h>
+# include <X11/keysym.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <unistd.h>
 
-#include <math.h>
-#include <stdint.h>
-#include <sys/time.h>
-#include <X11/Xlib.h>
+# include <math.h>
+# include <stdint.h>
+# include <sys/time.h>
+# include <X11/Xlib.h>
 
-#define SCREENWIDTH 1080
-#define SCREENHEIGHT 500
-#define TEXHEIGHT 64
-#define TEXWIDTH 64
-#define NORTH 0
-#define SOUTH 1
-#define EAST 2
-#define WEST 3
-
+# define SCREENWIDTH 1080
+# define SCREENHEIGHT 500
+# define TEXHEIGHT 64
+# define TEXWIDTH 64
+# define NORTH 0
+# define SOUTH 1
+# define EAST 2
+# define WEST 3
 
 typedef struct s_img
 {
-	void *img;
-	char *addr;
-	int bits_per_pixel;
-	int line_length;
-	int endian;
-} t_img;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}			t_img;
 
 struct s_dda
 {
-    int width;
-    int height;
+	int		width;
+	int		height;
 
-    double cameraX;
-    double rayDirX;
-    double rayDirY;
-    int mapY;
-    int mapX;
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	int		map_y;
+	int		map_x;
 
-    double sideDistX;
-    double sideDistY;
+	double	side_dist_x;
+	double	side_dist_y;
 
-    double deltaDistX;
-    double deltaDistY;
-    double perpWallDist;
-    int stepX;
-    int stepY;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	perp_wall_dist;
+	int		step_x;
+	int		step_y;
 
-    int hit;
+	int		hit;
 
-    int side; 
+	int		side;
 };
-typedef struct s_dda t_dda;
+typedef struct s_dda	t_dda;
 
 struct s_data
 {
-    void *mlx_ptr;
-    void *win_ptr;
+	void		*mlx_ptr;
+	void		*win_ptr;
 
-    int floorColor;
-    int ceilingColor;
+	int			floor_color;
+	int			ceiling_color;
 
-    double posX;
-    double posY; // x and y start position
-    double dirX;
-    double dirY; // initial direction vector
-    double planeX;
-    double planeY; // the 2d raycaster version of camera plane
-    double time;    // time of current frame
-    double oldTime; // time of previous frame
-    double frameTime;
-    int lineHeight;
-    int drawStart;
-    int drawEnd;
-    int color;
+	double		pos_x;
+	double		pos_y; // x and y start position
+	double		dir_x;
+	double		dir_y; // initial direction vector
+	double		plane_x;
+	double		plane_y; // the 2d raycaster version of camera plane
+	double		time; // time of current frame
+	double		old_time; // time of previous frame
+	double		frame_time;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			color;
 
-    double moveSpeed;
-    double rotSpeed;
+	double		wall_x;
+	double		step;
 
-    uint32_t buffer[SCREENHEIGHT][SCREENWIDTH];
-    uint32_t *texture[4];
-    uint32_t    *adrress[4];
+	double		move_speed;
+	double		rot_speed;
 
-    t_dda control;
-    t_img img;
-    t_map map;
+	uint32_t	buffer[SCREENHEIGHT][SCREENWIDTH];
+	uint32_t	*texture[4];
+	uint32_t	*adrress[4];
+
+	t_dda		control;
+	t_img		img;
+	t_map		map;
 };
-typedef struct s_data t_data;
+typedef struct s_data	t_data;
 
-int handle_keypress(int keysym, t_data *data);
-int end_all(t_data *data);
-int loop_handler(t_data *data);
+void	render(t_data *data, t_dda *control);
+int		handle_keypress(int keysym, t_data *data);
+int		end_all(t_data *data);
+int		loop_handler(t_data *data);
+void	handle_forward(t_data *data);
+void	handle_backward(t_data *data);
+void	handle_right(t_data *data);
 
-double getTicks(void);
-void wallColors(t_data *data, t_dda *control);
-void verLine(int x, int start, int end, int color, t_data *data);
-void setDdaValues(t_dda *control, t_data *data, int x);
-void DDA(t_dda *control, t_data *data);
-void my_mlx_pixel_put(t_img *img, int x, int y, int color);
-void setupData(t_data *data);
-int getColors(char *rgb);
-void setupControl(t_dda *control);
-void clearBuffer(t_data *data);
-void redraw(t_data *data);
+double	get_ticks(void);
+void	wall_colors(t_data *data, t_dda *control);
+void	set_dda_values(t_dda *control, t_data *data, int x);
+void	dda(t_dda *control, t_data *data);
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void	setup_data(t_data *data);
+int		get_colors(char *rgb);
+void	setup_control(t_dda *control);
+void	clear_buffer(t_data *data);
+void	redraw(t_data *data);
+
+int		get_directioned_texture(t_data *data);
+void	fill_buffer(t_data *data, uint32_t color,
+			uint32_t buffer[][SCREENWIDTH], int x);
+void	fill_buffer2(t_data *data, uint32_t color,
+			uint32_t buffer[][SCREENWIDTH], int x);
+void	calculate_wall_x(t_data *data, t_dda *control);
+void	calculate_tex_x(t_data *data, t_dda *control, int *tex_x);
+void	calculate_tex_pos(t_data *data, t_dda *control, double *tex_pos);
 
 #endif

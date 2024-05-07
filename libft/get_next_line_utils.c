@@ -53,7 +53,8 @@ char	*make_line(char *line, char *buff)
 	int		j;
 
 	i = 0;
-	temp = malloc(sizeof(char) * (ft_strlen_gnl(line) + ft_strlen_gnl(buff) + 1));
+	temp = malloc(sizeof(char)
+			* (ft_strlen_gnl(line) + ft_strlen_gnl(buff) + 1));
 	while (line && line[i])
 	{
 		temp[i] = line[i];

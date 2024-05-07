@@ -33,14 +33,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
-/*int main()
-{
-	int fd = open("test.txt", O_RDONLY);;
-	char *str = get_next_line(fd);
-	printf("%s\n", str);
-	free(str);
-	return (0);
-}*/
-/* has to search for \n in "line", {LINE 32}
-	breaks if it finds "\n", else return(1) */

@@ -1,118 +1,92 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_press.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oharoon <oharoon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/07 17:57:12 by oharoon           #+#    #+#             */
+/*   Updated: 2024/05/07 18:12:00 by oharoon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "my_mlx.h"
 #include "../parsing/parsing.h"
 #include <math.h>
 
-// void updateColor(t_data *data, t_dda *control)
-// {
-// 	if (data->map.map[control->mapY][control->mapX] == '1')
-// 	{
-// 		data->color = 0x00FF0000; // red
-// 		if (fabs(data->dirX) < 1e-6 && data->dirY < -0.5)
-// 		{
-// 			if (control->side == 0)
-// 				data->color = 0x000000FF; // blue
-// 		}
-// 		else if (fabs(data->dirX) < 1e-6 && data->dirY > 0.5)
-// 		{
-// 			if (control->side == 0)
-// 				data->color = 0x00FFFF00; // yellow
-// 		}
-// 		else if (data->dirX > 0.5 && fabs(data->dirY) < 1e-6)
-// 		{
-// 			if (control->side == 0)
-// 				data->color = 0x00FF00FF; // magenta
-// 		}
-// 		else if (data->dirX < -0.5 && fabs(data->dirY) < 1e-6)
-// 		{
-// 			if (control->side == 0)
-// 				data->color = 0x00FFA500; // orange
-// 		}
-// 	}
-// }
-
-int handle_keypress(int keycode, t_data *data)
+void	handle_left(t_data *data)
 {
-	// printf("handling keyPress\n");
-	// move forward if no wall in front of you
-	if (keycode == XK_Up || keycode == XK_w) // W
-	{
-		printf("foward\n");
-		if (data->map.map[(int)(data->posY + data->dirY * data->moveSpeed)][(int)(data->posX)] != '1')
-			data->posY += data->dirY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->dirX * data->moveSpeed)] != '1')
-			data->posX += data->dirX * data->moveSpeed;
-	}
-	// move backwards if no wall behind you
-	if (keycode == XK_Down || keycode == XK_s) // S
-	{
-		printf("backwards\n");
-		if (data->map.map[(int)(data->posY - data->dirY * data->moveSpeed)][(int)(data->posX)] != '1')
-			data->posY -= data->dirY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->dirX * data->moveSpeed)] != '1')
-			data->posX -= data->dirX * data->moveSpeed;
-	}
+	printf("move left\n");
+	if (data->map.map[(int)(data->pos_y - data->plane_y * data->move_speed)]
+		[(int)(data->pos_x)] != '1')
+		data->pos_y -= data->plane_y * data->move_speed;
+	if (data->map.map[(int)(data->pos_y)][(int)(data->pos_x - data->plane_x
+		* data->move_speed)] != '1')
+		data->pos_x -= data->plane_x * data->move_speed;
+}
 
-	if (keycode == XK_d) // D
-	{
-		printf("move right\n");
-		if (data->map.map[(int)(data->posY + data->planeY * data->moveSpeed)][(int)(data->posX)] != '1')
-			data->posY += data->planeY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX + data->planeX * data->moveSpeed)] != '1')
-			data->posX += data->planeX * data->moveSpeed;
-	}
-	// move backwards if no wall behind you
-	if (keycode == XK_a) // A
-	{
-		printf("move left\n");
-		if (data->map.map[(int)(data->posY - data->planeY * data->moveSpeed)][(int)(data->posX)] != '1')
-			data->posY -= data->planeY * data->moveSpeed;
-		if (data->map.map[(int)(data->posY)][(int)(data->posX - data->planeX * data->moveSpeed)] != '1')
-			data->posX -= data->planeX * data->moveSpeed;
-	}
+void	look_right(t_data *data, double olddir_y, double oldplane_y)
+{
+	printf("look right\n");
+	olddir_y = data->dir_y;
+	data->dir_y = data->dir_y * cos(-data->rot_speed) - data->dir_x
+		* sin(-data->rot_speed);
+	data->dir_x = olddir_y * sin(-data->rot_speed) + data->dir_x
+		* cos(-data->rot_speed);
+	oldplane_y = data->plane_y;
+	data->plane_y = data->plane_y * cos(-data->rot_speed) - data->plane_x
+		* sin(-data->rot_speed);
+	data->plane_x = oldplane_y * sin(-data->rot_speed) + data->plane_x
+		* cos(-data->rot_speed);
+}
 
-	// rotate to the right
-	if (keycode == XK_Right)
-	{
-		printf("look right\n");
-		double oldDirY = data->dirY;
-		data->dirY = data->dirY * cos(-data->rotSpeed) - data->dirX * sin(-data->rotSpeed);
-		data->dirX = oldDirY * sin(-data->rotSpeed) + data->dirX * cos(-data->rotSpeed);
-		double oldPlaneY = data->planeY;
-		data->planeY = data->planeY * cos(-data->rotSpeed) - data->planeX * sin(-data->rotSpeed);
-		data->planeX = oldPlaneY * sin(-data->rotSpeed) + data->planeX * cos(-data->rotSpeed);
-		// updateColor(data, &data->control);
-	}
-	// rotate to the left
-	if (keycode == XK_Left)
-	{
-		printf("look left\n");
-		double oldDirY = data->dirY;
-		data->dirY = data->dirY * cos(data->rotSpeed) - data->dirX * sin(data->rotSpeed);
-		data->dirX = oldDirY * sin(data->rotSpeed) + data->dirX * cos(data->rotSpeed);
-		double oldPlaneY = data->planeY;
-		data->planeY = data->planeY * cos(data->rotSpeed) - data->planeX * sin(data->rotSpeed);
-		data->planeX = oldPlaneY * sin(data->rotSpeed) + data->planeX * cos(data->rotSpeed);
-		// updateColor(data, &data->control);
-	}
+void	look_left(t_data *data, double olddir_y, double oldplane_y)
+{
+	printf("look left\n");
+	olddir_y = data->dir_y;
+	data->dir_y = data->dir_y * cos(data->rot_speed) - data->dir_x
+		* sin(data->rot_speed);
+	data->dir_x = olddir_y * sin(data->rot_speed) + data->dir_x
+		* cos(data->rot_speed);
+	oldplane_y = data->plane_y;
+	data->plane_y = data->plane_y * cos(data->rot_speed) - data->plane_x
+		* sin(data->rot_speed);
+	data->plane_x = oldplane_y * sin(data->rot_speed) + data->plane_x
+		* cos(data->rot_speed);
+}
 
-	if (keycode == XK_Escape)
-	{
+int	handle_keypress(int keycode, t_data *data)
+{
+	double	olddir_y;
+	double	oldplane_y;
+
+	olddir_y = 0;
+	oldplane_y = 0;
+	if (keycode == XK_Up || keycode == XK_w)
+		handle_forward(data);
+	else if (keycode == XK_Down || keycode == XK_s)
+		handle_backward(data);
+	else if (keycode == XK_d)
+		handle_right(data);
+	else if (keycode == XK_a)
+		handle_left(data);
+	else if (keycode == XK_Right)
+		look_right(data, olddir_y, oldplane_y);
+	else if (keycode == XK_Left)
+		look_left(data, olddir_y, oldplane_y);
+	else if (keycode == XK_Escape)
 		end_all(data);
-	}
-
 	return (0);
 }
 
-int end_all(t_data *data)
+int	end_all(t_data *data)
 {
-	// for (int i = 0; i < 8; i++)
-	// 	free(data->texture[i]);
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < 4)
 	{
-		if(data->texture[i])
+		if (data->texture[i])
 			mlx_destroy_image(data->mlx_ptr, (void *)data->texture[i]);
 		i++;
 	}
@@ -125,8 +99,6 @@ int end_all(t_data *data)
 		mlx_destroy_display(data->mlx_ptr);
 		free(data->mlx_ptr);
 	}
-
-	free_mapS(&data->map);
-
+	free_map_struct(&data->map);
 	exit(0);
 }
