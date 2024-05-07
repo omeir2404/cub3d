@@ -42,7 +42,7 @@ void wallTextures(t_data *data, t_dda *control, int x, int texNum)
 		texX = TEXWIDTH - texX - 1;
 	if (control->side == 1 && control->rayDirY < 0)
 		texX = TEXWIDTH - texX - 1;
-	int pitch = 100; // check what this is for
+	int pitch = 1; // check what this is for
 	// TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
 	// How much to increase the texture coordinate per screen pixel
 	double step = 1.0 * TEXHEIGHT / data->lineHeight;
@@ -141,8 +141,8 @@ void Render(t_data *data, t_dda *control)
 	redraw(data); // here its all drawn, in verLine it should add to buffer and use putimage not putpixel
 
 	// speed modifiers
-	data->moveSpeed = data->frameTime * 5.0; // the constant value is in squares/second
-	data->rotSpeed = data->frameTime * 3.0;	 // the constant value is in radians/second
+	data->moveSpeed = data->frameTime * 2.0; // the constant value is in squares/second
+	data->rotSpeed = data->frameTime * 1.0;	 // the constant value is in radians/second
 }
 
 int loop_handler(t_data *data)
