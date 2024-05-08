@@ -83,6 +83,8 @@ int	check_map_chars(char **map, t_map *struc)
  */
 int	last_in_line(char *line, int index)
 {
+	if (!line[index])
+		return (0);
 	while (line[index])
 	{
 		if (line[index] != ' ' && line[index] != '\0'

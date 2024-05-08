@@ -6,7 +6,7 @@
 /*   By: oharoon <oharoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:12:20 by oharoon           #+#    #+#             */
-/*   Updated: 2024/05/07 19:32:55 by oharoon          ###   ########.fr       */
+/*   Updated: 2024/05/08 15:32:55 by oharoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,6 @@ void	render(t_data *data, t_dda *control)
 	data->time = get_ticks();
 	data->frame_time = (data->time - data->old_time) / 1000.0;
 	redraw(data);
-	data->move_speed = data->frame_time * 2.0;
-	data->rot_speed = data->frame_time * 1.0;
+	data->move_speed = data->frame_time * 1.0;
+	data->rot_speed = data->frame_time * 0.6;
 }

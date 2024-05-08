@@ -6,7 +6,7 @@
 /*   By: oharoon <oharoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 12:37:41 by oharoon           #+#    #+#             */
-/*   Updated: 2024/05/07 16:57:14 by oharoon          ###   ########.fr       */
+/*   Updated: 2024/05/08 15:52:24 by oharoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int	check_surrounded(char **map, t_map *struc)
 		while (map[i][j])
 		{
 			if (!check_valid_char(map[i][j]) && map[i][j] != '1'
-				&& map[i][j] != ' ' && map[i][j] != '\n' && map[i][j] != '\r')
+				&& map[i][j] != ' ' && map[i][j] != '\n' && map[i][j] != '\r'
+				&& map[i][j] != '\0')
 				if (check_surround_char(map, i, j, struc) == 1)
 					return (-1);
 			j++;
