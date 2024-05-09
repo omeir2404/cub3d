@@ -6,7 +6,7 @@
 /*   By: oharoon <oharoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:45:26 by oharoon           #+#    #+#             */
-/*   Updated: 2024/05/07 19:56:22 by oharoon          ###   ########.fr       */
+/*   Updated: 2024/05/09 15:52:08 by oharoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,13 @@ void	setup_position_and_direction(t_data *data)
 
 void	setup_data(t_data *data)
 {
+	int	i;
+
+
+	i = -1;
+	data->buffer = (uint32_t **)malloc(SCREENHEIGHT * sizeof(uint32_t *));
+	while (++i < SCREENHEIGHT)
+		data->buffer[i] = (uint32_t *)malloc(SCREENWIDTH * sizeof(uint32_t));
 	setup_graphics(data);
 	setup_position_and_direction(data);
 	data->draw_start = 0;

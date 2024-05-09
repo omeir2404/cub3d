@@ -6,7 +6,7 @@
 /*   By: oharoon <oharoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 17:00:55 by oharoon           #+#    #+#             */
-/*   Updated: 2024/05/07 19:49:09 by oharoon          ###   ########.fr       */
+/*   Updated: 2024/05/09 15:37:29 by oharoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ struct s_data
 	double		move_speed;
 	double		rot_speed;
 
-	uint32_t	buffer[SCREENHEIGHT][SCREENWIDTH];
+	uint32_t	**buffer;
 	uint32_t	*texture[4];
 	uint32_t	*adrress[4];
 
@@ -130,9 +130,9 @@ void	redraw(t_data *data);
 
 int		get_directioned_texture(t_data *data);
 void	fill_buffer(t_data *data, uint32_t color,
-			uint32_t buffer[][SCREENWIDTH], int x);
+			uint32_t **buffer, int x);
 void	fill_buffer2(t_data *data, uint32_t color,
-			uint32_t buffer[][SCREENWIDTH], int x);
+			uint32_t **buffer, int x);
 void	calculate_wall_x(t_data *data, t_dda *control);
 void	calculate_tex_x(t_data *data, t_dda *control, int *tex_x);
 void	calculate_tex_pos(t_data *data, t_dda *control, double *tex_pos);

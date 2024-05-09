@@ -6,7 +6,7 @@
 /*   By: oharoon <oharoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 17:57:12 by oharoon           #+#    #+#             */
-/*   Updated: 2024/05/07 18:12:00 by oharoon          ###   ########.fr       */
+/*   Updated: 2024/05/09 15:35:51 by oharoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,11 @@ int	end_all(t_data *data)
 		free(data->mlx_ptr);
 	}
 	free_map_struct(&data->map);
+	i = -1;
+	while(++i < SCREENHEIGHT)
+		if(data->buffer[i])
+			free(data->buffer[i]);
+	if(data->buffer)
+		free(data->buffer);
 	exit(0);
 }

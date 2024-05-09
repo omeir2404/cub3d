@@ -6,14 +6,14 @@
 /*   By: oharoon <oharoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:28:56 by oharoon           #+#    #+#             */
-/*   Updated: 2024/05/07 19:31:41 by oharoon          ###   ########.fr       */
+/*   Updated: 2024/05/09 15:36:50 by oharoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_mlx.h"
 
 void	fill_buffer(t_data *data, uint32_t color,
-	uint32_t buffer[][SCREENWIDTH], int x)
+	uint32_t **buffer, int x)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ void	fill_buffer(t_data *data, uint32_t color,
 }
 
 void	fill_buffer2(t_data *data, uint32_t color,
-	uint32_t buffer[][SCREENWIDTH], int x)
+	uint32_t **buffer, int x)
 {
 	int	i;
 

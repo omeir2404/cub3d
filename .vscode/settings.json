@@ -7,6 +7,8 @@
         "parsing.h": "c",
         "mlx.h": "c",
         "my_mlx.h": "c",
-        "dda.h": "c"
+        "dda.h": "c",
+        "math.h": "c",
+        "stdint.h": "c"
     }
 }
